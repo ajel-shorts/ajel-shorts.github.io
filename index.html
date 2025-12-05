@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -10,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXGOKSqwfl/oMEAEXpfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Ensure fonts are loaded before canvas rendering -->
   <style>
     body {
       font-family: 'Cairo', sans-serif;
@@ -23,6 +22,15 @@
     }
     details[open] > summary svg {
       transform: rotate(180deg);
+    }
+    .main-image-placeholder {
+      background-color: #374151; /* gray-700 */
+      color: #9CA3AF; /* gray-400 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
     }
   </style>
 </head>
@@ -198,9 +206,12 @@
             <div class="relative w-full my-auto flex-grow rounded-xl overflow-hidden bg-gray-700/50 border-2 border-gray-700/50 shadow-md">
                 <img 
                   id="previewMainImage" 
-                  src="https://picsum.photos/720/720" 
+                  src="" 
                   alt="News image" 
-                  class="absolute inset-0 w-full h-full object-cover transition-all">
+                  class="absolute inset-0 w-full h-full object-cover transition-all hidden"> <!-- Hidden by default -->
+                <div id="mainImagePlaceholder" class="absolute inset-0 main-image-placeholder">
+                  <span>اختر صورة للخبر</span>
+                </div>
                 
                 <div 
                   id="previewLogoContainer"
@@ -285,11 +296,12 @@
     const exportButtonText = document.getElementById('exportButtonText');
     const exportLoading = document.getElementById('exportLoading');
 
-    // Preview Elements
+    // Preview Elements (still used for live preview)
     const imagePreview = document.getElementById('imagePreview');
     const previewHeadline = document.getElementById('previewHeadline');
     const previewNewsBody = document.getElementById('previewNewsBody');
     const previewMainImage = document.getElementById('previewMainImage');
+    const mainImagePlaceholder = document.getElementById('mainImagePlaceholder');
     const previewLogoContainer = document.getElementById('previewLogoContainer');
     const previewLogo = document.getElementById('previewLogo');
 
@@ -302,7 +314,13 @@
     const headlineShadowBlurValue = document.getElementById('headlineShadowBlurValue');
     const newsBodyShadowBlurValue = document.getElementById('newsBodyShadowBlurValue');
 
-    const placeholderLogo = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48cGF0aCBkPSJNMTIgMjJWMk0yIDEyaDIwTTUuNSAxOC41QTkgOSAwIDAgMCAxMiAyMiA5IDkgMCAwIDAgMTguNSA1LjUiLz48cGF0aCBkPSJNNTUuNSA1LjVBNyA3IDAgMCAxIDEyIDIgNyA3IDAgMCAxIDE4LjUgMTguNSIvPjwvc3ZnPg==';
+    const placeholderLogo = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2U9InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwYXRoIGQ9Ik0xMiAyMlYyTTIgMTJoMjBNNi4zOCA0LjQ3QTkgOSAwIDAgMSAxMiAyYTkgOSAwIDAgMSAxNy42MiA0LjQ3TTE3LjYyIDE5LjUzQTkgOSAwIDAgMSA1Ljc2IDE5LjUzbS00LjM4LTE1LjA2QzMuNjcgMi43MiA1LjcyIDIgOCAyYTEwIDEwIDAgMCAxIDAgMjBBMTkgMTkgMCAwIDEgNi4zOCAxOS41M00xNy42MiA0LjQ3QTkgOSAwIDAgMCAxMiAyIDkgOSAwIDAgMC4xODkuNTNMNDQuODIuNTMiLz48L3N2Zz4=';
+    
+    // SVG for Like icon, converted to Data URL
+    const likeIconSVG = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg>`)}`;
+    // SVG for Subscribe icon, converted to Data URL
+    const subscribeIconSVG = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>`)}`;
+
 
     const palettes = [
       { name: 'أخبار العالم', css: `repeating-linear-gradient(0deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), radial-gradient(ellipse at center, rgba(14, 29, 61, 1) 0%, rgba(12, 20, 39, 1) 100%)` },
@@ -318,6 +336,10 @@
     ];
 
     let currentLogoPosition = 'top-right';
+    let currentMainImageDataUrl = null; 
+    let currentLogoImageDataUrl = null;
+    let currentBackgroundPalette = palettes[0]; // Store the current active palette object
+
 
     // --- Functions to update preview ---
     function updateHeadline() {
@@ -336,17 +358,21 @@
       updateNewsBodyShadow();
     }
 
-    function updateMainImage(url) {
-      if (url) {
-        previewMainImage.src = url;
+    function updateMainImageDisplay() {
+      if (currentMainImageDataUrl) {
+        previewMainImage.src = currentMainImageDataUrl;
+        previewMainImage.classList.remove('hidden');
+        mainImagePlaceholder.classList.add('hidden');
       } else {
-        previewMainImage.src = ''; // Or a placeholder if desired
+        previewMainImage.src = ''; 
+        previewMainImage.classList.add('hidden');
+        mainImagePlaceholder.classList.remove('hidden');
       }
     }
 
-    function updateLogo(url) {
-      if (url) {
-        previewLogo.src = url;
+    function updateLogoDisplay() {
+      if (currentLogoImageDataUrl) {
+        previewLogo.src = currentLogoImageDataUrl;
         previewLogoContainer.style.display = 'flex';
       } else {
         previewLogoContainer.style.display = 'none';
@@ -380,7 +406,6 @@
         }
       });
 
-      // Clear existing position classes
       previewLogoContainer.classList.remove('top-4', 'left-4', 'right-4', 'bottom-4');
 
       switch (position) {
@@ -400,8 +425,8 @@
     }
 
     function updateBackgroundPalette(palette) {
+      currentBackgroundPalette = palette; // Store the entire palette object
       imagePreview.style.background = palette.css;
-      // Update active button styling
       document.querySelectorAll('#paletteButtons button').forEach(btn => {
         if (btn.dataset.name === palette.name) {
           btn.classList.add('bg-blue-600/50', 'ring-2', 'ring-blue-400');
@@ -423,6 +448,321 @@
       newsBodyShadowBlurValue.textContent = newsBodyShadowBlurInput.value;
     }
 
+    // --- Core Canvas Drawing Function ---
+    async function drawCanvasImage() {
+      const outputWidth = 1080; // Standard Shorts/Reels width
+      const outputHeight = 1920; // Standard Shorts/Reels height
+      const padding = 60; // Overall padding within the canvas
+      const logoMargin = 40; // Margin for logo from edges
+
+      const canvas = document.createElement('canvas');
+      canvas.width = outputWidth;
+      canvas.height = outputHeight;
+      const ctx = canvas.getContext('2d');
+
+      // 1. Draw Background (Simplified from complex CSS gradient)
+      // For complex CSS gradients, you might need a library or manually draw shapes/gradients
+      // Here's a simplification using the first palette's colors if it's a simple gradient.
+      // For radial-gradient from example: rgba(14, 29, 61, 1) to rgba(12, 20, 39, 1)
+      const bgGradient = ctx.createRadialGradient(outputWidth / 2, outputHeight / 2, 0, outputWidth / 2, outputHeight / 2, Math.max(outputWidth, outputHeight) / 1.5);
+      bgGradient.addColorStop(0, 'rgba(14, 29, 61, 1)'); // Dark blue center
+      bgGradient.addColorStop(1, 'rgba(12, 20, 39, 1)'); // Even darker blue edges
+      ctx.fillStyle = bgGradient;
+      ctx.fillRect(0, 0, outputWidth, outputHeight);
+
+      // --- Define content area ---
+      const contentWidth = outputWidth - (padding * 2);
+      let currentY = padding; // Start Y position
+
+      // 2. Draw Headline
+      const headlineText = headlineInput.value;
+      const headlineFontSize = parseFloat(headlineSizeInput.value) * (outputWidth / 405); // Scale font size
+      const headlineFontFamily = fontFamilySelect.value;
+      const headlineColor = headlineColorInput.value;
+      const headlineShadowColor = headlineShadowColorInput.value;
+      const headlineShadowBlur = parseFloat(headlineShadowBlurInput.value) * (outputWidth / 405);
+
+      ctx.save();
+      ctx.font = `900 ${headlineFontSize}px "${headlineFontFamily}"`; // Use 900 for 'black' weight
+      ctx.textAlign = 'center';
+      ctx.fillStyle = headlineColor;
+      ctx.shadowColor = headlineShadowColor;
+      ctx.shadowBlur = headlineShadowBlur;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 2 * (outputWidth / 405); // Scale shadow offset
+
+      const wrappedHeadline = wrapText(ctx, headlineText, contentWidth);
+      const headlineLineHeight = headlineFontSize * 1.2;
+      const headlineBoxHeight = wrappedHeadline.length * headlineLineHeight + (padding * 0.5); // Minimal padding for box
+      const headlineBoxY = currentY;
+
+      // Draw background for headline
+      ctx.shadowBlur = 0; // Disable shadow for background box
+      ctx.fillStyle = 'rgba(0,0,0,0.5)'; // Black with 50% opacity
+      roundRect(ctx, padding, headlineBoxY, contentWidth, headlineBoxHeight, 15); // Rounded rect for headline box
+      ctx.fill();
+
+      // Redraw text with shadow
+      ctx.fillStyle = headlineColor;
+      ctx.shadowBlur = headlineShadowBlur;
+      ctx.shadowOffsetY = 2 * (outputWidth / 405);
+
+      currentY = headlineBoxY + (padding * 0.25) + headlineLineHeight / 2;
+      for (let i = 0; i < wrappedHeadline.length; i++) {
+          ctx.fillText(wrappedHeadline[i], outputWidth / 2, currentY);
+          currentY += headlineLineHeight;
+      }
+      ctx.restore(); // Restore context after headline drawing
+      currentY = headlineBoxY + headlineBoxHeight + (outputHeight * 0.02); // Gap after headline box
+
+      // 3. Draw Top Separator
+      ctx.fillStyle = 'rgba(66, 153, 225, 0.3)'; // blue-400/30
+      ctx.fillRect(outputWidth * 0.25, currentY, outputWidth * 0.5, 2);
+      currentY += (outputHeight * 0.02); // Gap after separator
+
+      // 4. Draw Main Image (if present)
+      let mainImageHeight = (outputHeight * 0.35); // Max height for image
+      const mainImageX = padding;
+      let mainImageY = currentY;
+      
+      let actualImageWidth = contentWidth;
+      let actualImageHeight = mainImageHeight;
+
+      if (currentMainImageDataUrl) {
+          await new Promise((resolve) => {
+              const img = new Image();
+              img.onload = () => {
+                  // Calculate aspect ratio to fit image without distortion
+                  const imgAspectRatio = img.width / img.height;
+                  const boxAspectRatio = contentWidth / mainImageHeight;
+
+                  if (imgAspectRatio > boxAspectRatio) {
+                      actualImageHeight = contentWidth / imgAspectRatio;
+                  } else {
+                      actualImageWidth = mainImageHeight * imgAspectRatio;
+                  }
+                  
+                  // Center the image if it doesn't fill the box
+                  const drawX = mainImageX + (contentWidth - actualImageWidth) / 2;
+                  const drawY = mainImageY + (mainImageHeight - actualImageHeight) / 2;
+
+                  ctx.save();
+                  // Clip to rounded rectangle before drawing image
+                  roundRect(ctx, mainImageX, mainImageY, contentWidth, mainImageHeight, 15); // Border radius 15 for image container
+                  ctx.clip();
+                  ctx.drawImage(img, drawX, drawY, actualImageWidth, actualImageHeight);
+                  ctx.restore();
+                  
+                  resolve();
+              };
+              img.onerror = () => {
+                  console.error("Failed to load main image for canvas.");
+                  resolve(); // Resolve anyway to not block the process
+              };
+              img.src = currentMainImageDataUrl;
+          });
+      } else {
+          // Draw placeholder if no image
+          ctx.fillStyle = '#374151'; // gray-700
+          roundRect(ctx, mainImageX, mainImageY, contentWidth, mainImageHeight, 15);
+          ctx.fill();
+          ctx.fillStyle = '#9CA3AF'; // gray-400
+          ctx.font = `normal ${headlineFontSize * 0.5}px "${headlineFontFamily}"`;
+          ctx.textAlign = 'center';
+          ctx.fillText('اختر صورة للخبر', outputWidth / 2, mainImageY + mainImageHeight / 2);
+      }
+      currentY += mainImageHeight + (outputHeight * 0.02); // Gap after main image
+
+      // 5. Draw Logo (if present)
+      if (currentLogoImageDataUrl && previewLogoContainer.style.display !== 'none') {
+        await new Promise((resolve) => {
+          const logoImg = new Image();
+          logoImg.onload = () => {
+            const logoSize = parseFloat(logoSizeInput.value) * (outputWidth / 405); // Scale logo size
+            const logoPadding = parseFloat(logoPaddingInput.value) * (outputWidth / 405); // Scale padding
+            const borderRadius = parseFloat(logoBorderRadiusInput.value) * (outputWidth / 405); // Scale border radius
+            const logoBoxSize = logoSize + (logoPadding * 2);
+
+            let logoDrawX, logoDrawY;
+
+            switch (currentLogoPosition) {
+              case 'top-left':
+                logoDrawX = logoMargin;
+                logoDrawY = logoMargin;
+                break;
+              case 'top-right':
+                logoDrawX = outputWidth - logoBoxSize - logoMargin;
+                logoDrawY = logoMargin;
+                break;
+              case 'bottom-left':
+                logoDrawX = logoMargin;
+                logoDrawY = mainImageY + mainImageHeight - logoBoxSize - logoMargin; // Position relative to main image bottom
+                break;
+              case 'bottom-right':
+                logoDrawX = outputWidth - logoBoxSize - logoMargin;
+                logoDrawY = mainImageY + mainImageHeight - logoBoxSize - logoMargin; // Position relative to main image bottom
+                break;
+            }
+
+            // Draw logo container
+            ctx.save();
+            ctx.fillStyle = 'rgba(0,0,0,0.3)'; // Black with 30% opacity
+            ctx.strokeStyle = 'rgba(255,255,255,0.2)'; // White with 20% opacity
+            ctx.lineWidth = 2 * (outputWidth / 405); // Scale border width
+            
+            roundRect(ctx, logoDrawX, logoDrawY, logoBoxSize, logoBoxSize, borderRadius);
+            ctx.fill();
+            ctx.stroke();
+            ctx.clip(); // Clip to the rounded rectangle for the logo image
+
+            // Draw logo image inside the container
+            ctx.drawImage(logoImg, logoDrawX + logoPadding, logoDrawY + logoPadding, logoSize, logoSize);
+            ctx.restore();
+            resolve();
+          };
+          logoImg.onerror = () => {
+              console.error("Failed to load logo image for canvas.");
+              resolve();
+          };
+          logoImg.src = currentLogoImageDataUrl;
+        });
+      }
+
+
+      // 6. Draw Bottom Separator
+      ctx.fillStyle = 'rgba(66, 153, 225, 0.3)'; // blue-400/30
+      ctx.fillRect(outputWidth * 0.25, currentY, outputWidth * 0.5, 2);
+      currentY += (outputHeight * 0.02); // Gap after separator
+
+      // 7. Draw News Body
+      const newsBodyText = newsBodyInput.value;
+      const newsBodyFontSize = parseFloat(newsBodySizeInput.value) * (outputWidth / 405); // Scale font size
+      const newsBodyFontFamily = fontFamilySelect.value;
+      const newsBodyColor = newsBodyColorInput.value;
+      const newsBodyShadowColor = newsBodyShadowColorInput.value;
+      const newsBodyShadowBlur = parseFloat(newsBodyShadowBlurInput.value) * (outputWidth / 405);
+
+      ctx.save();
+      ctx.font = `normal ${newsBodyFontSize}px "${newsBodyFontFamily}"`;
+      ctx.textAlign = 'center';
+      ctx.fillStyle = newsBodyColor;
+      ctx.shadowColor = newsBodyShadowColor;
+      ctx.shadowBlur = newsBodyShadowBlur;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 1 * (outputWidth / 405); // Scale shadow offset
+
+      const wrappedNewsBody = wrapText(ctx, newsBodyText, contentWidth);
+      const newsBodyLineHeight = newsBodyFontSize * 1.2;
+      const newsBodyBoxHeight = wrappedNewsBody.length * newsBodyLineHeight + (padding * 0.5);
+      const newsBodyBoxY = currentY;
+
+      // Draw background for news body
+      ctx.shadowBlur = 0; // Disable shadow for background box
+      ctx.fillStyle = 'rgba(0,0,0,0.5)'; // Black with 50% opacity
+      roundRect(ctx, padding, newsBodyBoxY, contentWidth, newsBodyBoxHeight, 15); // Rounded rect for news body box
+      ctx.fill();
+
+      // Redraw text with shadow
+      ctx.fillStyle = newsBodyColor;
+      ctx.shadowBlur = newsBodyShadowBlur;
+      ctx.shadowOffsetY = 1 * (outputWidth / 405);
+
+      currentY = newsBodyBoxY + (padding * 0.25) + newsBodyLineHeight / 2;
+      for (let i = 0; i < wrappedNewsBody.length; i++) {
+          ctx.fillText(wrappedNewsBody[i], outputWidth / 2, currentY);
+          currentY += newsBodyLineHeight;
+      }
+      ctx.restore();
+      currentY = newsBodyBoxY + newsBodyBoxHeight + (outputHeight * 0.03); // Gap after news body box
+
+      // 8. Draw Like & Subscribe CTA
+      ctx.save();
+      ctx.font = `bold ${newsBodyFontSize * 0.8}px "${newsBodyFontFamily}"`; // Slightly smaller font
+      ctx.fillStyle = 'white';
+      ctx.shadowColor = 'rgba(0,0,0,0.5)';
+      ctx.shadowBlur = 3;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 1;
+
+      const iconSize = newsBodyFontSize; // Roughly size icons with body font
+      const textGap = iconSize * 0.3; // Gap between icon and text
+      const totalCtaWidth = (iconSize + ctx.measureText('إعجاب').width + textGap) + (iconSize + ctx.measureText('اشتراك').width + textGap) + (outputWidth * 0.03); // Total width with separator
+
+      let ctaStartX = (outputWidth - totalCtaWidth) / 2;
+
+      // Draw Like
+      await new Promise((resolve) => {
+        const likeImg = new Image();
+        likeImg.onload = () => {
+          ctx.drawImage(likeImg, ctaStartX, currentY, iconSize, iconSize);
+          ctx.fillText('إعجاب', ctaStartX + iconSize + textGap, currentY + iconSize * 0.75);
+          resolve();
+        };
+        likeImg.onerror = resolve; // Continue even if icon fails
+        likeImg.src = likeIconSVG;
+      });
+      
+      ctaStartX += iconSize + ctx.measureText('إعجاب').width + textGap;
+
+      // Draw separator
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.fillRect(ctaStartX + (outputWidth * 0.015), currentY, 2, iconSize);
+      ctaStartX += (outputWidth * 0.03); // Move past separator
+
+      // Draw Subscribe
+      await new Promise((resolve) => {
+        const subImg = new Image();
+        subImg.onload = () => {
+          ctx.drawImage(subImg, ctaStartX, currentY, iconSize, iconSize);
+          ctx.fillText('اشتراك', ctaStartX + iconSize + textGap, currentY + iconSize * 0.75);
+          resolve();
+        };
+        subImg.onerror = resolve; // Continue even if icon fails
+        subImg.src = subscribeIconSVG;
+      });
+      
+      ctx.restore();
+
+      return canvas;
+    }
+
+    // Helper to wrap text for canvas
+    function wrapText(context, text, maxWidth) {
+      const words = text.split(' ');
+      const lines = [];
+      let currentLine = words[0];
+
+      for (let i = 1; i < words.length; i++) {
+        const word = words[i];
+        const testLine = currentLine + ' ' + word;
+        const metrics = context.measureText(testLine);
+        const testWidth = metrics.width;
+
+        if (testWidth > maxWidth && i > 0) {
+          lines.push(currentLine);
+          currentLine = word;
+        } else {
+          currentLine = testLine;
+        }
+      }
+      lines.push(currentLine);
+      return lines;
+    }
+
+    // Helper to draw a rounded rectangle
+    function roundRect(ctx, x, y, width, height, radius) {
+      if (width < 2 * radius) radius = width / 2;
+      if (height < 2 * radius) radius = height / 2;
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + width, y, x + width, y + height, radius);
+      ctx.arcTo(x + width, y + height, x, y + height, radius);
+      ctx.arcTo(x, y + height, x, y, radius);
+      ctx.arcTo(x, y, x + width, y, radius);
+      ctx.closePath();
+    }
+
+
     // --- Event Listeners ---
     headlineInput.addEventListener('input', updateHeadline);
     newsBodyInput.addEventListener('input', updateNewsBody);
@@ -443,8 +783,14 @@
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (e) => updateMainImage(e.target.result);
+        reader.onload = (e) => {
+          currentMainImageDataUrl = e.target.result;
+          updateMainImageDisplay();
+        };
         reader.readAsDataURL(file);
+      } else {
+        currentMainImageDataUrl = null;
+        updateMainImageDisplay();
       }
     });
 
@@ -452,10 +798,14 @@
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (e) => updateLogo(e.target.result);
+        reader.onload = (e) => {
+          currentLogoImageDataUrl = e.target.result;
+          updateLogoDisplay();
+        };
         reader.readAsDataURL(file);
       } else {
-        updateLogo(null); // Clear logo if no file selected
+        currentLogoImageDataUrl = null;
+        updateLogoDisplay();
       }
     });
 
@@ -471,18 +821,14 @@
       exportLoading.classList.remove('hidden');
 
       try {
-        const canvas = await html2canvas(imagePreview, {
-            useCORS: true, 
-            allowTaint: true,
-            scale: 2 
-        });
+        const canvas = await drawCanvasImage(); // Use our custom drawing function
         const link = document.createElement('a');
         link.download = `short-image-${Date.now()}.jpg`;
-        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        link.href = canvas.toDataURL('image/jpeg', 0.95); 
         link.click();
       } catch (error) {
           console.error("Error exporting image:", error);
-          alert("حدث خطأ أثناء تصدير الصورة. يرجى المحاولة مرة أخرى.");
+          alert("حدث خطأ أثناء تصدير الصورة. يرجى المحاولة مرة أخرى. (خطأ في رسم Canvas)");
       } finally {
           exportButton.disabled = false;
           exportButtonText.classList.remove('hidden');
@@ -492,7 +838,7 @@
 
     // --- Initialization ---
     function initializePalettes() {
-      paletteButtonsContainer.innerHTML = ''; // Clear existing buttons
+      paletteButtonsContainer.innerHTML = ''; 
       palettes.forEach((palette, index) => {
         const button = document.createElement('button');
         button.className = `flex items-center gap-3 w-full p-2 rounded-lg transition ${index === 0 ? 'bg-blue-600/50 ring-2 ring-blue-400' : 'bg-gray-700 hover:bg-gray-600/50'}`;
@@ -510,11 +856,13 @@
       updateHeadline();
       updateNewsBody();
       updateFontFamily();
-      updateLogoPosition('top-right'); // Set initial logo position
+      updateLogoPosition('top-right'); 
       updateLogoStyles();
       updateHeadlineShadow();
       updateNewsBodyShadow();
-      updateLogo(placeholderLogo); // Set initial placeholder logo
+      currentLogoImageDataUrl = placeholderLogo; 
+      updateLogoDisplay();
+      updateMainImageDisplay(); 
       initializePalettes();
       // The default palette is already set in the HTML for the preview
     }
