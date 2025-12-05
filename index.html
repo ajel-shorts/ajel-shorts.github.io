@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8" />
   <title>صانع صور الشورتس الإخبارية</title>
-  <base href="/" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -21,26 +20,418 @@
     details > summary::-webkit-details-marker {
       display: none;
     }
+    details[open] > summary svg {
+      transform: rotate(180deg);
+    }
   </style>
-<script type="importmap">
-{
-  "imports": {
-    "rxjs": "https://aistudiocdn.com/rxjs@^7.8.2?conditions=es2015",
-    "rxjs/operators": "https://aistudiocdn.com/rxjs@^7.8.2/operators?conditions=es2015",
-    "rxjs/ajax": "https://aistudiocdn.com/rxjs@^7.8.2/ajax?conditions=es2015",
-    "rxjs/webSocket": "https://aistudiocdn.com/rxjs@^7.8.2/webSocket?conditions=es2015",
-    "rxjs/testing": "https://aistudiocdn.com/rxjs@^7.8.2/testing?conditions=es2015",
-    "rxjs/fetch": "https://aistudiocdn.com/rxjs@^7.8.2/fetch?conditions=es2015",
-    "@angular/core": "https://next.esm.sh/@angular/core@^21.0.3?external=rxjs",
-    "@angular/compiler": "https://next.esm.sh/@angular/compiler@^21.0.3?external=rxjs",
-    "@angular/platform-browser": "https://next.esm.sh/@angular/platform-browser@^21.0.3?external=rxjs",
-    "@angular/common": "https://next.esm.sh/@angular/common@^21.0.3?external=rxjs"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body class="bg-gray-900 text-white">
-  <app-root></app-root>
+  <div id="app-root"></div>
+
+  <script type="module">
+    import { Component, ChangeDetectionStrategy, signal, ElementRef, ViewChild, computed, effect } from 'https://esm.sh/@angular/core@17.0.3';
+    import { bootstrapApplication } from 'https://esm.sh/@angular/platform-browser@17.0.3';
+    import { CommonModule } from 'https://esm.sh/@angular/common@17.0.3';
+
+    class Palette {
+      constructor(name, css) {
+        this.name = name;
+        this.css = css;
+      }
+    }
+
+    @Component({
+      selector: 'app-root',
+      standalone: true,
+      imports: [CommonModule],
+      template: `
+        <main class="min-h-screen bg-gray-900 text-gray-100 p-4 sm:p-6 lg:p-8">
+          <div class="max-w-7xl mx-auto">
+            <header class="text-center mb-8">
+              <h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-300">
+                صانع صور الشورتس الإخبارية
+              </h1>
+              <p class="mt-2 text-lg text-gray-400">
+                أنشئ صورًا احترافية وجذابة لفيديوهاتك القصيرة بسهولة.
+              </p>
+            </header>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+              <!-- Controls Panel -->
+              <div class="w-full lg:w-1/3 bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700">
+                <h2 class="text-2xl font-bold mb-4">لوحة التحكم</h2>
+                
+                <div class="space-y-3">
+                  <!-- Accordion: Content -->
+                  <details class="bg-gray-700/50 rounded-lg overflow-hidden" open>
+                    <summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
+                      <span>المحتوى</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </summary>
+                    <div class="p-4 border-t border-gray-600 space-y-4">
+                      <div>
+                        <label for="headline" class="block text-sm font-medium text-gray-300 mb-1">عنوان الخبر</label>
+                        <input type="text" id="headline" [value]="headline()" (input)="handleTextInput($event, headline)" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition">
+                      </div>
+                      <div>
+                        <label for="newsBody" class="block text-sm font-medium text-gray-300 mb-1">متن الخبر</label>
+                        <textarea id="newsBody" [value]="newsBody()" (input)="handleTextInput($event, newsBody)" rows="4" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+                      </div>
+                      <div>
+                        <label for="mainImage" class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" /></svg>
+                          <span>تغيير صورة الخبر</span>
+                        </label>
+                        <input type="file" id="mainImage" (change)="handleFile($event, mainImageUrl)" accept="image/png, image/jpeg, image/webp" class="hidden">
+                      </div>
+                    </div>
+                  </details>
+                  
+                  <!-- Accordion: Text Styling -->
+                  <details class="bg-gray-700/50 rounded-lg overflow-hidden">
+                    <summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
+                      <span>تصميم النصوص</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </summary>
+                    <div class="p-4 border-t border-gray-600 space-y-4">
+                      <div>
+                        <label for="fontFamily" class="block text-sm font-medium text-gray-300 mb-1">نوع الخط</label>
+                        <select id="fontFamily" [value]="fontFamily()" (change)="handleSelectInput($event, fontFamily)" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition">
+                          <option value="Cairo">Cairo</option>
+                          <option value="Tajawal">Tajawal</option>
+                          <option value="Almarai">Almarai</option>
+                        </select>
+                      </div>
+                      <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="headlineColor" class="block text-sm font-medium text-gray-300 mb-1">لون العنوان</label>
+                            <input type="color" id="headlineColor" [value]="headlineColor()" (input)="handleColorInput($event, headlineColor)" class="w-full h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
+                        </div>
+                        <div>
+                            <label for="newsBodyColor" class="block text-sm font-medium text-gray-300 mb-1">لون المتن</label>
+                            <input type="color" id="newsBodyColor" [value]="newsBodyColor()" (input)="handleColorInput($event, newsBodyColor)" class="w-full h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
+                        </div>
+                      </div>
+                      <div>
+                          <label for="headlineSize" class="block text-sm font-medium text-gray-300 mb-1">حجم العنوان ({{ headlineSize() }}px)</label>
+                          <input type="range" id="headlineSize" min="20" max="80" [value]="headlineSize()" (input)="handleRangeInput($event, headlineSize)" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                      </div>
+                      <div>
+                          <label for="newsBodySize" class="block text-sm font-medium text-gray-300 mb-1">حجم المتن ({{ newsBodySize() }}px)</label>
+                          <input type="range" id="newsBodySize" min="12" max="40" [value]="newsBodySize()" (input)="handleRangeInput($event, newsBodySize)" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                      </div>
+                      <div class="border-t border-gray-600 pt-4 space-y-4">
+                        <h4 class="text-md font-semibold">ظل العنوان</h4>
+                        <div class="flex items-center gap-4">
+                            <input type="color" [value]="headlineShadowColor()" (input)="handleColorInput($event, headlineShadowColor)" class="w-10 h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
+                            <div class="flex-grow">
+                              <label class="text-xs text-gray-400">التمويه: {{headlineShadowBlur()}}px</label>
+                              <input type="range" min="0" max="20" [value]="headlineShadowBlur()" (input)="handleRangeInput($event, headlineShadowBlur)" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                        </div>
+                      </div>
+                      <div class="border-t border-gray-600 pt-4 space-y-4">
+                        <h4 class="text-md font-semibold">ظل المتن</h4>
+                        <div class="flex items-center gap-4">
+                            <input type="color" [value]="newsBodyShadowColor()" (input)="handleColorInput($event, newsBodyShadowColor)" class="w-10 h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
+                            <div class="flex-grow">
+                              <label class="text-xs text-gray-400">التمويه: {{newsBodyShadowBlur()}}px</label>
+                              <input type="range" min="0" max="20" [value]="newsBodyShadowBlur()" (input)="handleRangeInput($event, newsBodyShadowBlur)" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+
+                  <!-- Accordion: Logo Styling -->
+                  <details class="bg-gray-700/50 rounded-lg overflow-hidden">
+                    <summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
+                      <span>تصميم الشعار</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </summary>
+                    <div class="p-4 border-t border-gray-600 space-y-4">
+                      <div>
+                        <label for="logoImage" class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
+                          <span>تغيير الشعار</span>
+                        </label>
+                        <input type="file" id="logoImage" (change)="handleFile($event, logoImageUrl)" accept="image/png, image/jpeg, image/webp" class="hidden">
+                      </div>
+                      <div>
+                        <label for="logoSize" class="block text-sm font-medium text-gray-300 mb-1">حجم الشعار ({{ logoSize() }}px)</label>
+                        <input type="range" id="logoSize" min="40" max="150" [value]="logoSize()" (input)="handleRangeInput($event, logoSize)" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                      </div>
+                      <div>
+                        <label for="logoPadding" class="block text-sm font-medium text-gray-300 mb-1">تبطين الشعار ({{ logoPadding() }}px)</label>
+                        <input type="range" id="logoPadding" min="0" max="24" [value]="logoPadding()" (input)="handleRangeInput($event, logoPadding)" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                      </div>
+                      <div>
+                        <label for="logoBorderRadius" class="block text-sm font-medium text-gray-300 mb-1">استدارة الحواف ({{ logoBorderRadius() }}px)</label>
+                        <input type="range" id="logoBorderRadius" min="0" max="75" [value]="logoBorderRadius()" (input)="handleRangeInput($event, logoBorderRadius)" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">موضع الشعار</label>
+                        <div class="grid grid-cols-2 gap-2">
+                          <button (click)="setLogoPosition('top-right')" [class]="logoPosition() === 'top-right' ? 'bg-blue-600' : 'bg-gray-700'" class="p-2 rounded-md text-xs transition">أعلى اليمين</button>
+                          <button (click)="setLogoPosition('top-left')" [class]="logoPosition() === 'top-left' ? 'bg-blue-600' : 'bg-gray-700'" class="p-2 rounded-md text-xs transition">أعلى اليسار</button>
+                          <button (click)="setLogoPosition('bottom-right')" [class]="logoPosition() === 'bottom-right' ? 'bg-blue-600' : 'bg-gray-700'" class="p-2 rounded-md text-xs transition">أسفل اليمين</button>
+                          <button (click)="setLogoPosition('bottom-left')" [class]="logoPosition() === 'bottom-left' ? 'bg-blue-600' : 'bg-gray-700'" class="p-2 rounded-md text-xs transition">أسفل اليسار</button>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+
+                  <!-- Accordion: Background Palettes -->
+                  <details class="bg-gray-700/50 rounded-lg overflow-hidden">
+                    <summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
+                      <span>تصميم الخلفية</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </summary>
+                    <div class="p-4 border-t border-gray-600 space-y-2">
+                      @for (palette of palettes(); track palette.name) {
+                        <button 
+                          (click)="setActivePalette(palette)" 
+                          class="flex items-center gap-3 w-full p-2 rounded-lg transition"
+                          [class]="activePalette() === palette ? 'bg-blue-600/50 ring-2 ring-blue-400' : 'bg-gray-700 hover:bg-gray-600/50'">
+                          <div class="w-8 h-8 rounded-md border border-white/20 shrink-0" [style.background]="palette.css"></div>
+                          <span class="text-sm font-medium">{{ palette.name }}</span>
+                        </button>
+                      }
+                    </div>
+                  </details>
+
+                </div>
+              </div>
+
+              <!-- Preview Panel -->
+              <div class="w-full lg:w-2/3 flex flex-col items-center justify-center">
+                <div 
+                  #imagePreview 
+                  class="w-full max-w-[405px] aspect-[9/16] overflow-hidden shadow-2xl flex flex-col justify-start p-6 sm:p-8 gap-3 transition-all duration-500"
+                  [style.background]="activePalette().css"
+                  [style.font-family]="fontFamily()">
+                  
+                  <div class="bg-black/50 backdrop-blur-sm p-3 rounded-lg shadow-lg">
+                    <h2 
+                      class="font-black text-center w-full"
+                      [style.color]="headlineColor()"
+                      [style.font-size.px]="headlineSize()"
+                      [style.text-shadow]="headlineTextShadow()">
+                        {{ headline() }}
+                    </h2>
+                  </div>
+                  
+                  <div class="h-px w-1/2 mx-auto bg-blue-400/30"></div>
+
+                  <div class="relative w-full my-auto flex-grow rounded-xl overflow-hidden bg-gray-700/50 border-2 border-gray-700/50 shadow-md">
+                    @if (mainImageUrl()) {
+                      <img 
+                        [src]="mainImageUrl()" 
+                        alt="News image" 
+                        class="absolute inset-0 w-full h-full object-cover transition-all">
+                      
+                      @if (logoImageUrl()) {
+                        <div 
+                          class="absolute flex items-center justify-center bg-black/30 backdrop-blur-sm shadow-xl border-2 border-white/20 transition-all duration-300"
+                          [class]="getLogoPositionClasses()"
+                          [style.width.px]="logoSize()"
+                          [style.height.px]="logoSize()"
+                          [style.padding.px]="logoPadding()"
+                          [style.border-radius.px]="logoBorderRadius()">
+                          <img [src]="logoImageUrl()" alt="Logo" class="w-full h-full object-contain drop-shadow-lg">
+                        </div>
+                      }
+                    } @else {
+                        <div class="w-full h-full flex items-center justify-center text-gray-500 text-center p-4">
+                          <span>اختر صورة للخبر</span>
+                        </div>
+                    }
+                  </div>
+                  
+                  <div class="h-px w-1/2 mx-auto bg-blue-400/30"></div>
+
+                  <div class="bg-black/50 backdrop-blur-sm p-3 rounded-lg shadow-lg">
+                    <p 
+                      class="font-medium text-center w-full"
+                      [style.color]="newsBodyColor()"
+                      [style.font-size.px]="newsBodySize()"
+                      [style.text-shadow]="newsBodyTextShadow()">
+                        {{ newsBody() }}
+                    </p>
+                  </div>
+
+                  <!-- Like & Subscribe CTA -->
+                  <div class="mt-auto flex items-center justify-center gap-4 text-white font-semibold text-sm pt-4">
+                      <div class="flex items-center gap-1.5">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                          </svg>
+                          <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.5);">إعجاب</span>
+                      </div>
+                      <div class="h-5 w-px bg-white/30"></div>
+                      <div class="flex items-center gap-1.5">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                          <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.5);">اشتراك</span>
+                      </div>
+                  </div>
+                </div>
+
+                <button 
+                  (click)="exportImage()" 
+                  [disabled]="isExporting()"
+                  class="mt-6 w-full max-w-[405px] bg-gradient-to-r from-blue-500 to-teal-400 text-white font-bold py-3 px-6 rounded-lg text-lg hover:from-blue-600 hover:to-teal-500 transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+                    @if (isExporting()) {
+                      <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span>جاري التصدير...</span>
+                    } @else {
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      <span>تصدير الصورة</span>
+                    }
+                </button>
+              </div>
+            </div>
+          </div>
+        </main>
+      `,
+      changeDetection: ChangeDetectionStrategy.OnPush
+    })
+    class AppComponent {
+      @ViewChild('imagePreview') imagePreview;
+
+      // State Signals
+      headline = signal('هنا يكتب عنوان الخبر الرئيسي');
+      newsBody = signal('تفاصيل موجزة عن الخبر لجذب المشاهد. يجب أن تكون قصيرة وواضحة.');
+      mainImageUrl = signal('https://picsum.photos/720/720');
+      logoImageUrl = signal(null);
+      
+      // Style Signals
+      headlineColor = signal('#FFFFFF');
+      headlineSize = signal(40);
+      newsBodyColor = signal('#E0E0E0');
+      newsBodySize = signal(20);
+      logoPosition = signal('top-right');
+      logoSize = signal(80);
+      logoPadding = signal(8);
+      logoBorderRadius = signal(12);
+      
+      // Font & Text Shadow Signals
+      fontFamily = signal('Cairo');
+      headlineShadowColor = signal('#000000');
+      headlineShadowBlur = signal(5);
+      newsBodyShadowColor = signal('#000000');
+      newsBodyShadowBlur = signal(3);
+
+      isExporting = signal(false);
+      
+      placeholderLogo = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48cGF0aCBkPSJNMTIgMjJWMk0yIDEyaDIwTTUuNSAxOC41QTkgOSAwIDAgMCAxMiAyMiA5IDkgMCAwIDAgMTguNSA1LjUiLz48cGF0aCBkPSJNNTUuNSA1LjVBNyA3IDAgMCAxIDEyIDIgNyA3IDAgMCAxIDE4LjUgMTguNSIvPjwvc3ZnPg==';
+
+      palettes = signal([
+        new Palette('أخبار العالم', `repeating-linear-gradient(0deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), radial-gradient(ellipse at center, rgba(14, 29, 61, 1) 0%, rgba(12, 20, 39, 1) 100%)`),
+        new Palette('عاجل وحيوي', 'radial-gradient(ellipse at top left, rgba(179, 58, 58, 0.7), transparent 60%), radial-gradient(ellipse at bottom right, rgba(36, 36, 128, 0.6), transparent 70%), #111217'),
+        new Palette('تقني ومستقبلي', 'linear-gradient(135deg, #020024 0%, #090979 35%, #00d4ff 100%)'),
+        new Palette('ذهبي فاخر', 'radial-gradient(ellipse at bottom, rgba(212, 175, 55, 0.2), transparent 70%), #1a1a1a'),
+        new Palette('أزرق هادئ', 'linear-gradient(45deg, #09203f 0%, #537895 100%)'),
+        new Palette('غرافيت داكن', 'linear-gradient(160deg, #434343 0%, #1e1e1e 100%)'),
+        new Palette('أحمر ناري', 'linear-gradient(135deg, #6d0000 0%, #d32f2f 74%)'),
+        new Palette('موف غامض', 'linear-gradient(135deg, #311b92 0%, #7e57c2 100%)'),
+        new Palette('فوشيا عصري', 'linear-gradient(45deg, #c51162 0%, #f50057 100%)'),
+        new Palette('سيان حيوي', 'linear-gradient(45deg, #004d40 0%, #009688 100%)')
+      ]);
+      activePalette = signal(this.palettes()[0]);
+      
+      // Computed Signals for styles
+      headlineTextShadow = computed(() => `0px 2px ${this.headlineShadowBlur()}px ${this.headlineShadowColor()}`);
+      newsBodyTextShadow = computed(() => `0px 1px ${this.newsBodyShadowBlur()}px ${this.newsBodyShadowColor()}`);
+
+
+      constructor() {
+        this.logoImageUrl.set(this.placeholderLogo);
+      }
+
+      handleTextInput(event, targetSignal) {
+        const inputElement = event.target;
+        targetSignal.set(inputElement.value);
+      }
+      
+      handleSelectInput(event, targetSignal) {
+        const inputElement = event.target;
+        targetSignal.set(inputElement.value);
+      }
+
+      handleRangeInput(event, targetSignal) {
+        const inputElement = event.target;
+        targetSignal.set(Number(inputElement.value));
+      }
+      
+      handleColorInput(event, targetSignal) {
+        const inputElement = event.target;
+        targetSignal.set(inputElement.value);
+      }
+
+      handleFile(event, targetSignal) {
+        const input = event.target;
+        if (input.files && input.files[0]) {
+          const file = input.files[0];
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const result = e.target.result;
+            if (typeof result === 'string') {
+              targetSignal.set(result);
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+      
+      setLogoPosition(position) {
+        this.logoPosition.set(position);
+      }
+
+      setActivePalette(palette) {
+        this.activePalette.set(palette);
+      }
+
+      getLogoPositionClasses() {
+        const position = this.logoPosition();
+        switch (position) {
+          case 'top-left': return 'top-4 left-4';
+          case 'top-right': return 'top-4 right-4';
+          case 'bottom-left': return 'bottom-4 left-4';
+          case 'bottom-right': return 'bottom-4 right-4';
+        }
+      }
+
+      async exportImage() {
+        if (!this.imagePreview) return;
+        this.isExporting.set(true);
+        try {
+          const element = this.imagePreview.nativeElement;
+          const canvas = await html2canvas(element, { 
+              useCORS: true, 
+              allowTaint: true,
+              scale: 2 // Increase resolution for better quality
+          });
+          const link = document.createElement('a');
+          link.download = `short-image-${Date.now()}.jpg`;
+          link.href = canvas.toDataURL('image/jpeg', 0.95);
+          link.click();
+        } catch (error) {
+            console.error("Error exporting image:", error);
+            alert("حدث خطأ أثناء تصدير الصورة. يرجى المحاولة مرة أخرى.");
+        } finally {
+            this.isExporting.set(false);
+        }
+      }
+    }
+
+    bootstrapApplication(AppComponent).catch(err => console.error(err));
+  </script>
 </body>
 </html>
