@@ -9,8 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Ensure fonts are loaded before canvas rendering.
-       The SVG will reference these Google Fonts directly. -->
   <style>
     body {
       font-family: 'Cairo', sans-serif;
@@ -62,11 +60,11 @@
               <div class="p-4 border-t border-gray-600 space-y-4">
                 <div>
                   <label for="headline" class="block text-sm font-medium text-gray-300 mb-1">عنوان الخبر</label>
-                  <input type="text" id="headline" value="هنا يكتب عنوان الخبر الرئيسي" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition">
+                  <input type="text" id="headline" value="أبو سنيمة.. ماذا نعرف عن العائلة التي قتلت ياسر أبو شباب؟" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition">
                 </div>
                 <div>
                   <label for="newsBody" class="block text-sm font-medium text-gray-300 mb-1">متن الخبر</label>
-                  <textarea id="newsBody" rows="4" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition">تفاصيل موجزة عن الخبر لجذب المشاهد. يجب أن تكون قصيرة وواضحة.</textarea>
+                  <textarea id="newsBody" rows="4" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition">تعد عائلة أبو سنيمة من أبرز وأقدم العائلات الفلسطينية في مدينة رفح جنوب القطاع، حيث خاضت العديد من المناورات ضد قوات الاحتلال والمليشيات التابعة لها. أعلنت العشيرة مسؤوليتها عن مقتل ياسر أبو شباب، موضحة أن أحد أفرادها كان ضمن مجموعة اشتبكت معه ومع عناصره مما أدى إلى مصرعه، معتبرة الحادث فصلاً جديدًا من الفخر والاعتزاز.</textarea>
                 </div>
                 <div>
                   <label for="mainImageInput" class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition">
@@ -191,23 +189,23 @@
           <div 
             id="imagePreview" 
             class="w-full max-w-[405px] aspect-[9/16] overflow-hidden shadow-2xl flex flex-col justify-start p-6 sm:p-8 gap-3 transition-all duration-500"
-            style="background: repeating-linear-gradient(0deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), radial-gradient(ellipse at center, rgba(14, 29, 61, 1) 0%, rgba(12, 20, 39, 1) 100%); font-family: 'Cairo', sans-serif;">
+            style="background: linear-gradient(160deg, #222222 0%, #000000 100%); font-family: 'Cairo', sans-serif;">
             
             <div class="bg-black/50 backdrop-blur-sm p-3 rounded-lg shadow-lg">
               <h2 
                 id="previewHeadline" 
                 class="font-black text-center w-full"
                 style="color: #FFFFFF; font-size: 40px; text-shadow: 0px 2px 5px #000000;">
-                  بن تحتضن قرعة كأس العالم 2026
+                  أبو سنيمة.. ماذا نعرف عن العائلة التي قتلت ياسر أبو شباب؟
               </h2>
             </div>
             
-            <div class="h-px w-1/2 mx-auto bg-blue-400/30"></div>
+            <div class="h-px w-1/2 mx-auto bg-gray-600/50"></div>
 
             <div class="relative w-full my-auto flex-grow rounded-xl overflow-hidden bg-gray-700/50 border-2 border-gray-700/50 shadow-md">
                 <img 
                   id="previewMainImage" 
-                  src="https://i.ibb.co/L90B42d/world-cup-qatar-2022-trophy-unsplash.jpg" 
+                  src="https://i.ibb.co/k2L2q6c/Screenshot-2024-05-24-033146.png" 
                   alt="News image" 
                   class="absolute inset-0 w-full h-full object-cover transition-all"> 
                 <div id="mainImagePlaceholder" class="absolute inset-0 main-image-placeholder hidden">
@@ -222,14 +220,14 @@
                 </div>
             </div>
             
-            <div class="h-px w-1/2 mx-auto bg-blue-400/30"></div>
+            <div class="h-px w-1/2 mx-auto bg-gray-600/50"></div>
 
             <div class="bg-black/50 backdrop-blur-sm p-3 rounded-lg shadow-lg">
               <p 
                 id="previewNewsBody" 
                 class="font-medium text-center w-full"
                 style="color: #E0E0E0; font-size: 20px; text-shadow: 0px 1px 3px #000000;">
-                  تترقب الساحة الكروية حفل سحب قرعة كأس العالم في العاصمة الأمريكية غدًا، وهو الأول الذي ستنظمه ثلاثة بلدان ويجمع 48 منتخبًا. سيتم توزيع الفرق على 12 مجموعة وفقًا لتصنيف الفيفا. الحفل سيشهد تقديم ريو فرديناند وسامانثا جونسون بمشاركة نجوم رياضيين مثل توم برادي وواين غريتزكي. كما سيحيي الحفل مغنيون بارزون، ويتوقع أن يستقطب بين 5 إلى 7 ملايين زائر. المباراة النهائية ستقام في نيويورك في 19 يوليو.
+                  تعد عائلة أبو سنيمة من أبرز وأقدم العائلات الفلسطينية في مدينة رفح جنوب القطاع، حيث خاضت العديد من المناورات ضد قوات الاحتلال والمليشيات التابعة لها. أعلنت العشيرة مسؤوليتها عن مقتل ياسر أبو شباب، موضحة أن أحد أفرادها كان ضمن مجموعة اشتبكت معه ومع عناصره مما أدى إلى مصرعه، معتبرة الحادث فصلاً جديدًا من الفخر والاعتزاز.
               </p>
             </div>
 
@@ -316,7 +314,7 @@
     const newsBodyShadowBlurValue = document.getElementById('newsBodyShadowBlurValue');
 
     // Default images (now using your provided image URLs)
-    const defaultMainImage = 'https://i.ibb.co/L90B42d/world-cup-qatar-2022-trophy-unsplash.jpg';
+    const defaultMainImage = 'https://i.ibb.co/k2L2q6c/Screenshot-2024-05-24-033146.png';
     const defaultLogoImage = 'https://i.ibb.co/VMyh02B/logo.png';
     
     // SVG for Like icon, converted to Data URL
@@ -326,6 +324,17 @@
 
 
     const palettes = [
+      { name: 'غرافيت داكن (افتراضي)', css: 'linear-gradient(160deg, #222222 0%, #000000 100%)',
+        svgBackground: (width, height) => `
+          <defs>
+            <linearGradient id="darkGraphiteGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#222222" />
+              <stop offset="100%" style="stop-color:#000000" />
+            </linearGradient>
+          </defs>
+          <rect width="${width}" height="${height}" fill="url(#darkGraphiteGradient)" />
+        `
+      },
       { name: 'أخبار العالم', css: `repeating-linear-gradient(0deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), radial-gradient(ellipse at center, rgba(14, 29, 61, 1) 0%, rgba(12, 20, 39, 1) 100%)`, 
         svgBackground: (width, height) => `
           <defs>
@@ -376,17 +385,6 @@
             </linearGradient>
           </defs>
           <rect width="${width}" height="${height}" fill="url(#calmBlueGradient)" />
-        `
-      },
-      { name: 'غرافيت داكن', css: 'linear-gradient(160deg, #434343 0%, #1e1e1e 100%)',
-        svgBackground: (width, height) => `
-          <defs>
-            <linearGradient id="darkGraphiteGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" style="stop-color:#434343" />
-              <stop offset="100%" style="stop-color:#1e1e1e" />
-            </linearGradient>
-          </defs>
-          <rect width="${width}" height="${height}" fill="url(#darkGraphiteGradient)" />
         `
       },
       { name: 'أحمر ناري', css: 'linear-gradient(135deg, #6d0000 0%, #d32f2f 74%)',
@@ -664,7 +662,7 @@
       currentY = headlineBoxY + headlineBoxHeight + (outputHeight * 0.02);
 
       // 3. Top Separator
-      svgContent += `<rect x="${outputWidth * 0.25}" y="${currentY}" width="${outputWidth * 0.5}" height="2" fill="rgba(66, 153, 225, 0.3)" />`;
+      svgContent += `<rect x="${outputWidth * 0.25}" y="${currentY}" width="${outputWidth * 0.5}" height="2" fill="rgba(100, 100, 100, 0.5)" />`; // Darker separator
       currentY += (outputHeight * 0.02);
 
       // 4. Main Image
@@ -755,14 +753,14 @@
                 <rect x="${logoDrawX}" y="${logoDrawY}" width="${logoBoxSize}" height="${logoBoxSize}" rx="${borderRadius}" ry="${borderRadius}" />
               </clipPath>
             </defs>
-            <rect x="${logoDrawX}" y="${logoDrawY}" width="${logoBoxSize}" height="${logoBoxSize}" rx="${borderRadius}" ry="${borderRadius}" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.2)" stroke-width="${2 * (outputWidth / 405)}" filter="url(#logoShadow)" />
+            <rect x="${logoDrawX}" y="${logoDrawY}" width="${logoBoxSize}" height="${logoBoxSize}" rx="${borderRadius}" ry="${borderRadius}" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.2)" stroke-width="${2 * (outputWidth / 405)}" filter="url(#logoShadow)" />
             <image href="${logoImageEncoded}" x="${logoDrawX + logoPadding}" y="${logoDrawY + logoPadding}" width="${logoSize}" height="${logoSize}" clip-path="url(#logoClip)" />
           `;
       }
 
 
       // 6. Bottom Separator
-      svgContent += `<rect x="${outputWidth * 0.25}" y="${currentY}" width="${outputWidth * 0.5}" height="2" fill="rgba(66, 153, 225, 0.3)" />`;
+      svgContent += `<rect x="${outputWidth * 0.25}" y="${currentY}" width="${outputWidth * 0.5}" height="2" fill="rgba(100, 100, 100, 0.5)" />`; // Darker separator
       currentY += (outputHeight * 0.02);
 
       // 7. News Body
@@ -1019,7 +1017,8 @@
       updateLogoStyles();
       updateHeadlineShadow();
       updateNewsBodyShadow();
-      initializePalettes();
+      initializePalettes(); // This will apply the first palette
+      updateBackgroundPalette(palettes[0]); // Explicitly set the default palette
     }
 
     initializeApp();
