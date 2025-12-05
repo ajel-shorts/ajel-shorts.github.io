@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Ensure fonts are loaded before canvas rendering -->
+  <!-- Ensure fonts are loaded before canvas rendering.
+       The SVG will reference these Google Fonts directly. -->
   <style>
     body {
       font-family: 'Cairo', sans-serif;
@@ -197,7 +198,7 @@
                 id="previewHeadline" 
                 class="font-black text-center w-full"
                 style="color: #FFFFFF; font-size: 40px; text-shadow: 0px 2px 5px #000000;">
-                  هنا يكتب عنوان الخبر الرئيسي
+                  بن تحتضن قرعة كأس العالم 2026
               </h2>
             </div>
             
@@ -206,18 +207,18 @@
             <div class="relative w-full my-auto flex-grow rounded-xl overflow-hidden bg-gray-700/50 border-2 border-gray-700/50 shadow-md">
                 <img 
                   id="previewMainImage" 
-                  src="" 
+                  src="https://i.ibb.co/L90B42d/world-cup-qatar-2022-trophy-unsplash.jpg" 
                   alt="News image" 
-                  class="absolute inset-0 w-full h-full object-cover transition-all hidden"> <!-- Hidden by default -->
-                <div id="mainImagePlaceholder" class="absolute inset-0 main-image-placeholder">
+                  class="absolute inset-0 w-full h-full object-cover transition-all"> 
+                <div id="mainImagePlaceholder" class="absolute inset-0 main-image-placeholder hidden">
                   <span>اختر صورة للخبر</span>
                 </div>
                 
                 <div 
                   id="previewLogoContainer"
                   class="absolute flex items-center justify-center bg-black/30 backdrop-blur-sm shadow-xl border-2 border-white/20 transition-all duration-300 top-4 right-4"
-                  style="width: 80px; height: 80px; padding: 8px; border-radius: 12px; display: none;"> <!-- Initially hidden -->
-                  <img id="previewLogo" src="" alt="Logo" class="w-full h-full object-contain drop-shadow-lg">
+                  style="width: 80px; height: 80px; padding: 8px; border-radius: 12px;"> 
+                  <img id="previewLogo" src="https://i.ibb.co/VMyh02B/logo.png" alt="Logo" class="w-full h-full object-contain drop-shadow-lg">
                 </div>
             </div>
             
@@ -228,7 +229,7 @@
                 id="previewNewsBody" 
                 class="font-medium text-center w-full"
                 style="color: #E0E0E0; font-size: 20px; text-shadow: 0px 1px 3px #000000;">
-                  تفاصيل موجزة عن الخبر لجذب المشاهد. يجب أن تكون قصيرة وواضحة.
+                  تترقب الساحة الكروية حفل سحب قرعة كأس العالم في العاصمة الأمريكية غدًا، وهو الأول الذي ستنظمه ثلاثة بلدان ويجمع 48 منتخبًا. سيتم توزيع الفرق على 12 مجموعة وفقًا لتصنيف الفيفا. الحفل سيشهد تقديم ريو فرديناند وسامانثا جونسون بمشاركة نجوم رياضيين مثل توم برادي وواين غريتزكي. كما سيحيي الحفل مغنيون بارزون، ويتوقع أن يستقطب بين 5 إلى 7 ملايين زائر. المباراة النهائية ستقام في نيويورك في 19 يوليو.
               </p>
             </div>
 
@@ -314,34 +315,134 @@
     const headlineShadowBlurValue = document.getElementById('headlineShadowBlurValue');
     const newsBodyShadowBlurValue = document.getElementById('newsBodyShadowBlurValue');
 
-    const placeholderLogo = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2U9InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwYXRoIGQ9Ik0xMiAyMlYyTTIgMTJoMjBNNi4zOCA0LjQ3QTkgOSAwIDAgMSAxMiAyYTkgOSAwIDAgMSAxNy42MiA0LjQ3TTE3LjYyIDE5LjUzQTkgOSAwIDAgMSA1Ljc2IDE5LjUzbS00LjM4LTE1LjA2QzMuNjcgMi43MiA1LjcyIDIgOCAyYTEwIDEwIDAgMCAxIDAgMjBBMTkgMTkgMCAwIDEgNi4zOCAxOS41M00xNy42MiA0LjQ3QTkgOSAwIDAgMCAxMiAyIDkgOSAwIDAgMC4xODkuNTNMNDQuODIuNTMiLz48L3N2Zz4=';
+    // Default images (now using your provided image URLs)
+    const defaultMainImage = 'https://i.ibb.co/L90B42d/world-cup-qatar-2022-trophy-unsplash.jpg';
+    const defaultLogoImage = 'https://i.ibb.co/VMyh02B/logo.png';
     
     // SVG for Like icon, converted to Data URL
-    const likeIconSVG = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg>`)}`;
+    const likeIconSVG = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="#EF4444"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg>`)}`;
     // SVG for Subscribe icon, converted to Data URL
-    const subscribeIconSVG = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>`)}`;
+    const subscribeIconSVG = `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="#FBBF24"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>`)}`;
 
 
     const palettes = [
-      { name: 'أخبار العالم', css: `repeating-linear-gradient(0deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), radial-gradient(ellipse at center, rgba(14, 29, 61, 1) 0%, rgba(12, 20, 39, 1) 100%)` },
-      { name: 'عاجل وحيوي', css: 'radial-gradient(ellipse at top left, rgba(179, 58, 58, 0.7), transparent 60%), radial-gradient(ellipse at bottom right, rgba(36, 36, 128, 0.6), transparent 70%), #111217' },
-      { name: 'تقني ومستقبلي', css: 'linear-gradient(135deg, #020024 0%, #090979 35%, #00d4ff 100%)' },
-      { name: 'ذهبي فاخر', css: 'radial-gradient(ellipse at bottom, rgba(212, 175, 55, 0.2), transparent 70%), #1a1a1a' },
-      { name: 'أزرق هادئ', css: 'linear-gradient(45deg, #09203f 0%, #537895 100%)' },
-      { name: 'غرافيت داكن', css: 'linear-gradient(160deg, #434343 0%, #1e1e1e 100%)' },
-      { name: 'أحمر ناري', css: 'linear-gradient(135deg, #6d0000 0%, #d32f2f 74%)' },
-      { name: 'موف غامض', css: 'linear-gradient(135deg, #311b92 0%, #7e57c2 100%)' },
-      { name: 'فوشيا عصري', css: 'linear-gradient(45deg, #c51162 0%, #f50057 100%)' },
-      { name: 'سيان حيوي', css: 'linear-gradient(45deg, #004d40 0%, #009688 100%)' }
+      { name: 'أخبار العالم', css: `repeating-linear-gradient(0deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), radial-gradient(ellipse at center, rgba(14, 29, 61, 1) 0%, rgba(12, 20, 39, 1) 100%)`, 
+        svgBackground: (width, height) => `
+          <defs>
+            <radialGradient id="worldNewsGradient" cx="50%" cy="50%" r="75%" fx="50%" fy="50%">
+              <stop offset="0%" style="stop-color:rgb(14,29,61);stop-opacity:1" />
+              <stop offset="100%" style="stop-color:rgb(12,20,39);stop-opacity:1" />
+            </radialGradient>
+            <pattern id="grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="40" stroke="rgba(125, 175, 255, 0.05)" stroke-width="1"/>
+              <line x1="0" y1="0" x2="40" y2="0" stroke="rgba(125, 175, 255, 0.05)" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="${width}" height="${height}" fill="url(#worldNewsGradient)" />
+          <rect width="${width}" height="${height}" fill="url(#grid)" />
+        `
+      },
+      { name: 'عاجل وحيوي', css: 'radial-gradient(ellipse at top left, rgba(179, 58, 58, 0.7), transparent 60%), radial-gradient(ellipse at bottom right, rgba(36, 36, 128, 0.6), transparent 70%), #111217', 
+        svgBackground: (width, height) => `
+          <rect width="${width}" height="${height}" fill="#111217" />
+          <ellipse cx="0%" cy="0%" rx="${width * 0.7}" ry="${height * 0.4}" fill="rgba(179, 58, 58, 0.7)" />
+          <ellipse cx="100%" cy="100%" rx="${width * 0.6}" ry="${height * 0.35}" fill="rgba(36, 36, 128, 0.6)" />
+        `
+      },
+      { name: 'تقني ومستقبلي', css: 'linear-gradient(135deg, #020024 0%, #090979 35%, #00d4ff 100%)',
+        svgBackground: (width, height) => `
+          <defs>
+            <linearGradient id="techGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#020024" />
+              <stop offset="35%" style="stop-color:#090979" />
+              <stop offset="100%" style="stop-color:#00d4ff" />
+            </linearGradient>
+          </defs>
+          <rect width="${width}" height="${height}" fill="url(#techGradient)" />
+        `
+      },
+      { name: 'ذهبي فاخر', css: 'radial-gradient(ellipse at bottom, rgba(212, 175, 55, 0.2), transparent 70%), #1a1a1a',
+        svgBackground: (width, height) => `
+          <rect width="${width}" height="${height}" fill="#1a1a1a" />
+          <ellipse cx="50%" cy="100%" rx="${width * 0.8}" ry="${height * 0.5}" fill="rgba(212, 175, 55, 0.2)" />
+        `
+      },
+      { name: 'أزرق هادئ', css: 'linear-gradient(45deg, #09203f 0%, #537895 100%)',
+        svgBackground: (width, height) => `
+          <defs>
+            <linearGradient id="calmBlueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#09203f" />
+              <stop offset="100%" style="stop-color:#537895" />
+            </linearGradient>
+          </defs>
+          <rect width="${width}" height="${height}" fill="url(#calmBlueGradient)" />
+        `
+      },
+      { name: 'غرافيت داكن', css: 'linear-gradient(160deg, #434343 0%, #1e1e1e 100%)',
+        svgBackground: (width, height) => `
+          <defs>
+            <linearGradient id="darkGraphiteGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#434343" />
+              <stop offset="100%" style="stop-color:#1e1e1e" />
+            </linearGradient>
+          </defs>
+          <rect width="${width}" height="${height}" fill="url(#darkGraphiteGradient)" />
+        `
+      },
+      { name: 'أحمر ناري', css: 'linear-gradient(135deg, #6d0000 0%, #d32f2f 74%)',
+        svgBackground: (width, height) => `
+          <defs>
+            <linearGradient id="fireRedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#6d0000" />
+              <stop offset="74%" style="stop-color:#d32f2f" />
+            </linearGradient>
+          </defs>
+          <rect width="${width}" height="${height}" fill="url(#fireRedGradient)" />
+        `
+      },
+      { name: 'موف غامض', css: 'linear-gradient(135deg, #311b92 0%, #7e57c2 100%)',
+        svgBackground: (width, height) => `
+          <defs>
+            <linearGradient id="purpleMysticGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#311b92" />
+              <stop offset="100%" style="stop-color:#7e57c2" />
+            </linearGradient>
+          </defs>
+          <rect width="${width}" height="${height}" fill="url(#purpleMysticGradient)" />
+        `
+      },
+      { name: 'فوشيا عصري', css: 'linear-gradient(45deg, #c51162 0%, #f50057 100%)',
+        svgBackground: (width, height) => `
+          <defs>
+            <linearGradient id="fuchsiaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#c51162" />
+              <stop offset="100%" style="stop-color:#f50057" />
+            </linearGradient>
+          </defs>
+          <rect width="${width}" height="${height}" fill="url(#fuchsiaGradient)" />
+        `
+      },
+      { name: 'سيان حيوي', css: 'linear-gradient(45deg, #004d40 0%, #009688 100%)',
+        svgBackground: (width, height) => `
+          <defs>
+            <linearGradient id="cyanVibrantGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#004d40" />
+              <stop offset="100%" style="stop-color:#009688" />
+            </linearGradient>
+          </defs>
+          <rect width="${width}" height="${height}" fill="url(#cyanVibrantGradient)" />
+        `
+      }
     ];
 
     let currentLogoPosition = 'top-right';
-    let currentMainImageDataUrl = null; 
-    let currentLogoImageDataUrl = null;
+    let currentMainImageDataUrl = defaultMainImage; 
+    let currentLogoImageDataUrl = defaultLogoImage;
     let currentBackgroundPalette = palettes[0]; // Store the current active palette object
 
 
     // --- Functions to update preview ---
+    // (These remain mostly the same as they update the live DOM preview)
     function updateHeadline() {
       previewHeadline.textContent = headlineInput.value;
       previewHeadline.style.color = headlineColorInput.value;
@@ -358,27 +459,72 @@
       updateNewsBodyShadow();
     }
 
-    function updateMainImageDisplay() {
-      if (currentMainImageDataUrl) {
-        previewMainImage.src = currentMainImageDataUrl;
-        previewMainImage.classList.remove('hidden');
-        mainImagePlaceholder.classList.add('hidden');
-      } else {
-        previewMainImage.src = ''; 
-        previewMainImage.classList.add('hidden');
-        mainImagePlaceholder.classList.remove('hidden');
-      }
+    async function loadImageAsDataURL(url) {
+        if (!url || url.startsWith('data:')) {
+            return url; // Already a data URL or empty
+        }
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        } catch (error) {
+            console.error('Failed to convert image to Data URL:', url, error);
+            return null; // Return null if conversion fails
+        }
     }
 
-    function updateLogoDisplay() {
-      if (currentLogoImageDataUrl) {
-        previewLogo.src = currentLogoImageDataUrl;
-        previewLogoContainer.style.display = 'flex';
-      } else {
-        previewLogoContainer.style.display = 'none';
-        previewLogo.src = '';
-      }
+    async function updateMainImageDisplay() {
+        if (mainImageInput.files.length > 0) {
+            const file = mainImageInput.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentMainImageDataUrl = e.target.result;
+                previewMainImage.src = currentMainImageDataUrl;
+                previewMainImage.classList.remove('hidden');
+                mainImagePlaceholder.classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        } else if (defaultMainImage) {
+            // Use the default image only if no file is selected
+            currentMainImageDataUrl = await loadImageAsDataURL(defaultMainImage);
+            previewMainImage.src = currentMainImageDataUrl;
+            previewMainImage.classList.remove('hidden');
+            mainImagePlaceholder.classList.add('hidden');
+        } else {
+            currentMainImageDataUrl = null;
+            previewMainImage.src = ''; 
+            previewMainImage.classList.add('hidden');
+            mainImagePlaceholder.classList.remove('hidden');
+        }
     }
+
+    async function updateLogoDisplay() {
+        if (logoImageInput.files.length > 0) {
+            const file = logoImageInput.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentLogoImageDataUrl = e.target.result;
+                previewLogo.src = currentLogoImageDataUrl;
+                previewLogoContainer.style.display = 'flex';
+            };
+            reader.readAsDataURL(file);
+        } else if (defaultLogoImage) {
+            // Use the default logo only if no file is selected
+            currentLogoImageDataUrl = await loadImageAsDataURL(defaultLogoImage);
+            previewLogo.src = currentLogoImageDataUrl;
+            previewLogoContainer.style.display = 'flex';
+        } else {
+            currentLogoImageDataUrl = null;
+            previewLogoContainer.style.display = 'none';
+            previewLogo.src = '';
+        }
+    }
+
 
     function updateFontFamily() {
       imagePreview.style.fontFamily = fontFamilySelect.value;
@@ -406,8 +552,9 @@
         }
       });
 
+      // Clear existing position classes
       previewLogoContainer.classList.remove('top-4', 'left-4', 'right-4', 'bottom-4');
-
+      // Apply new position classes
       switch (position) {
         case 'top-left':
           previewLogoContainer.classList.add('top-4', 'left-4');
@@ -448,285 +595,289 @@
       newsBodyShadowBlurValue.textContent = newsBodyShadowBlurInput.value;
     }
 
-    // --- Core Canvas Drawing Function ---
-    async function drawCanvasImage() {
-      const outputWidth = 1080; // Standard Shorts/Reels width
-      const outputHeight = 1920; // Standard Shorts/Reels height
-      const padding = 60; // Overall padding within the canvas
-      const logoMargin = 40; // Margin for logo from edges
+    // --- Core SVG Generation Function ---
+    async function generateSVGString() {
+      const outputWidth = 1080; 
+      const outputHeight = 1920; 
+      const padding = 60; 
+      const logoMargin = 40; 
+      const textLineHeightRatio = 1.2; // Line height is 1.2 * font size
 
-      const canvas = document.createElement('canvas');
-      canvas.width = outputWidth;
-      canvas.height = outputHeight;
-      const ctx = canvas.getContext('2d');
+      // Convert image URLs to Data URLs if they are not already
+      // This is crucial for SVG to embed them correctly
+      const mainImageEncoded = currentMainImageDataUrl ? await loadImageAsDataURL(currentMainImageDataUrl) : null;
+      const logoImageEncoded = currentLogoImageDataUrl ? await loadImageAsDataURL(currentLogoImageDataUrl) : null;
 
-      // 1. Draw Background (Simplified from complex CSS gradient)
-      // For complex CSS gradients, you might need a library or manually draw shapes/gradients
-      // Here's a simplification using the first palette's colors if it's a simple gradient.
-      // For radial-gradient from example: rgba(14, 29, 61, 1) to rgba(12, 20, 39, 1)
-      const bgGradient = ctx.createRadialGradient(outputWidth / 2, outputHeight / 2, 0, outputWidth / 2, outputHeight / 2, Math.max(outputWidth, outputHeight) / 1.5);
-      bgGradient.addColorStop(0, 'rgba(14, 29, 61, 1)'); // Dark blue center
-      bgGradient.addColorStop(1, 'rgba(12, 20, 39, 1)'); // Even darker blue edges
-      ctx.fillStyle = bgGradient;
-      ctx.fillRect(0, 0, outputWidth, outputHeight);
+      const fontFamily = fontFamilySelect.value;
+      // Load Google Fonts into SVG using @import - this is a common way to embed them
+      // Ensure these are the exact URLs Google provides for CSS @import
+      const fontImportCss = `
+        @import url('https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap');
+      `;
+
+      let svgContent = '';
+
+      // 1. Background
+      if (currentBackgroundPalette && currentBackgroundPalette.svgBackground) {
+          svgContent += currentBackgroundPalette.svgBackground(outputWidth, outputHeight);
+      } else {
+          // Fallback solid color if SVG background is not defined or selected
+          svgContent += `<rect width="${outputWidth}" height="${outputHeight}" fill="#111217" />`; 
+      }
 
       // --- Define content area ---
       const contentWidth = outputWidth - (padding * 2);
-      let currentY = padding; // Start Y position
+      let currentY = padding;
 
-      // 2. Draw Headline
+      // 2. Headline
       const headlineText = headlineInput.value;
-      const headlineFontSize = parseFloat(headlineSizeInput.value) * (outputWidth / 405); // Scale font size
-      const headlineFontFamily = fontFamilySelect.value;
+      const headlineFontSize = parseFloat(headlineSizeInput.value) * (outputWidth / 405);
       const headlineColor = headlineColorInput.value;
       const headlineShadowColor = headlineShadowColorInput.value;
       const headlineShadowBlur = parseFloat(headlineShadowBlurInput.value) * (outputWidth / 405);
+      const headlineShadowOffsetY = 2 * (outputWidth / 405);
 
-      ctx.save();
-      ctx.font = `900 ${headlineFontSize}px "${headlineFontFamily}"`; // Use 900 for 'black' weight
-      ctx.textAlign = 'center';
-      ctx.fillStyle = headlineColor;
-      ctx.shadowColor = headlineShadowColor;
-      ctx.shadowBlur = headlineShadowBlur;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 2 * (outputWidth / 405); // Scale shadow offset
+      const headlineFontWeight = fontFamily === 'Cairo' ? '900' : 'bold'; // Cairo has 900, others have bold
 
-      const wrappedHeadline = wrapText(ctx, headlineText, contentWidth);
-      const headlineLineHeight = headlineFontSize * 1.2;
-      const headlineBoxHeight = wrappedHeadline.length * headlineLineHeight + (padding * 0.5); // Minimal padding for box
+      // Temporarily use a canvas to measure text for wrapping
+      const tempCanvas = document.createElement('canvas');
+      const tempCtx = tempCanvas.getContext('2d');
+      tempCtx.font = `${headlineFontWeight} ${headlineFontSize}px "${fontFamily}"`;
+      const wrappedHeadline = wrapText(tempCtx, headlineText, contentWidth);
+      const headlineLineHeight = headlineFontSize * textLineHeightRatio;
+      const headlineBoxHeight = wrappedHeadline.length * headlineLineHeight + (padding * 0.5);
       const headlineBoxY = currentY;
 
-      // Draw background for headline
-      ctx.shadowBlur = 0; // Disable shadow for background box
-      ctx.fillStyle = 'rgba(0,0,0,0.5)'; // Black with 50% opacity
-      roundRect(ctx, padding, headlineBoxY, contentWidth, headlineBoxHeight, 15); // Rounded rect for headline box
-      ctx.fill();
+      // Headline Background Box
+      svgContent += `
+        <rect x="${padding}" y="${headlineBoxY}" width="${contentWidth}" height="${headlineBoxHeight}" rx="15" ry="15" fill="rgba(0,0,0,0.5)" />
+      `;
 
-      // Redraw text with shadow
-      ctx.fillStyle = headlineColor;
-      ctx.shadowBlur = headlineShadowBlur;
-      ctx.shadowOffsetY = 2 * (outputWidth / 405);
-
+      // Headline Text
       currentY = headlineBoxY + (padding * 0.25) + headlineLineHeight / 2;
+      svgContent += `<text x="${outputWidth / 2}" text-anchor="middle" font-family="${fontFamily}" font-weight="${headlineFontWeight}" font-size="${headlineFontSize}px" fill="${headlineColor}" style="filter:drop-shadow(0px ${headlineShadowOffsetY}px ${headlineShadowBlur}px ${headlineShadowColor});">`;
       for (let i = 0; i < wrappedHeadline.length; i++) {
-          ctx.fillText(wrappedHeadline[i], outputWidth / 2, currentY);
+          svgContent += `<tspan x="${outputWidth / 2}" y="${currentY}">${wrappedHeadline[i]}</tspan>`;
           currentY += headlineLineHeight;
       }
-      ctx.restore(); // Restore context after headline drawing
-      currentY = headlineBoxY + headlineBoxHeight + (outputHeight * 0.02); // Gap after headline box
+      svgContent += `</text>`;
+      currentY = headlineBoxY + headlineBoxHeight + (outputHeight * 0.02);
 
-      // 3. Draw Top Separator
-      ctx.fillStyle = 'rgba(66, 153, 225, 0.3)'; // blue-400/30
-      ctx.fillRect(outputWidth * 0.25, currentY, outputWidth * 0.5, 2);
-      currentY += (outputHeight * 0.02); // Gap after separator
+      // 3. Top Separator
+      svgContent += `<rect x="${outputWidth * 0.25}" y="${currentY}" width="${outputWidth * 0.5}" height="2" fill="rgba(66, 153, 225, 0.3)" />`;
+      currentY += (outputHeight * 0.02);
 
-      // 4. Draw Main Image (if present)
-      let mainImageHeight = (outputHeight * 0.35); // Max height for image
+      // 4. Main Image
+      let mainImageHeight = (outputHeight * 0.35); 
       const mainImageX = padding;
       let mainImageY = currentY;
-      
-      let actualImageWidth = contentWidth;
-      let actualImageHeight = mainImageHeight;
+      const mainImageBorderRadius = 15;
 
-      if (currentMainImageDataUrl) {
-          await new Promise((resolve) => {
-              const img = new Image();
-              img.onload = () => {
-                  // Calculate aspect ratio to fit image without distortion
-                  const imgAspectRatio = img.width / img.height;
-                  const boxAspectRatio = contentWidth / mainImageHeight;
+      if (mainImageEncoded) {
+          // We need actual image dimensions to calculate object-cover effect
+          const img = new Image();
+          img.src = mainImageEncoded;
+          await new Promise(resolve => img.onload = resolve); // Wait for image to load to get dimensions
 
-                  if (imgAspectRatio > boxAspectRatio) {
-                      actualImageHeight = contentWidth / imgAspectRatio;
-                  } else {
-                      actualImageWidth = mainImageHeight * imgAspectRatio;
-                  }
-                  
-                  // Center the image if it doesn't fill the box
-                  const drawX = mainImageX + (contentWidth - actualImageWidth) / 2;
-                  const drawY = mainImageY + (mainImageHeight - actualImageHeight) / 2;
+          const imgAspectRatio = img.width / img.height;
+          const boxAspectRatio = contentWidth / mainImageHeight;
 
-                  ctx.save();
-                  // Clip to rounded rectangle before drawing image
-                  roundRect(ctx, mainImageX, mainImageY, contentWidth, mainImageHeight, 15); // Border radius 15 for image container
-                  ctx.clip();
-                  ctx.drawImage(img, drawX, drawY, actualImageWidth, actualImageHeight);
-                  ctx.restore();
-                  
-                  resolve();
-              };
-              img.onerror = () => {
-                  console.error("Failed to load main image for canvas.");
-                  resolve(); // Resolve anyway to not block the process
-              };
-              img.src = currentMainImageDataUrl;
-          });
+          let drawWidth = contentWidth;
+          let drawHeight = mainImageHeight;
+          let drawX = mainImageX;
+          let drawY = mainImageY;
+
+          if (imgAspectRatio > boxAspectRatio) { // Image is wider than container
+              drawHeight = contentWidth / imgAspectRatio;
+              drawY = mainImageY + (mainImageHeight - drawHeight) / 2;
+          } else { // Image is taller than container
+              drawWidth = mainImageHeight * imgAspectRatio;
+              drawX = mainImageX + (contentWidth - drawWidth) / 2;
+          }
+
+          svgContent += `
+            <defs>
+              <clipPath id="mainImageClip">
+                <rect x="${mainImageX}" y="${mainImageY}" width="${contentWidth}" height="${mainImageHeight}" rx="${mainImageBorderRadius}" ry="${mainImageBorderRadius}" />
+              </clipPath>
+            </defs>
+            <rect x="${mainImageX}" y="${mainImageY}" width="${contentWidth}" height="${mainImageHeight}" rx="${mainImageBorderRadius}" ry="${mainImageBorderRadius}" fill="rgba(113,128,150,0.5)" stroke="rgba(113,128,150,0.5)" stroke-width="2" />
+            <image href="${mainImageEncoded}" x="${drawX}" y="${drawY}" width="${drawWidth}" height="${drawHeight}" clip-path="url(#mainImageClip)" />
+          `;
       } else {
-          // Draw placeholder if no image
-          ctx.fillStyle = '#374151'; // gray-700
-          roundRect(ctx, mainImageX, mainImageY, contentWidth, mainImageHeight, 15);
-          ctx.fill();
-          ctx.fillStyle = '#9CA3AF'; // gray-400
-          ctx.font = `normal ${headlineFontSize * 0.5}px "${headlineFontFamily}"`;
-          ctx.textAlign = 'center';
-          ctx.fillText('اختر صورة للخبر', outputWidth / 2, mainImageY + mainImageHeight / 2);
+          // Placeholder
+          svgContent += `
+            <rect x="${mainImageX}" y="${mainImageY}" width="${contentWidth}" height="${mainImageHeight}" rx="${mainImageBorderRadius}" ry="${mainImageBorderRadius}" fill="#374151" />
+            <text x="${outputWidth / 2}" y="${mainImageY + mainImageHeight / 2}" text-anchor="middle" alignment-baseline="middle" font-family="${fontFamily}" font-size="${headlineFontSize * 0.5}px" fill="#9CA3AF">اختر صورة للخبر</text>
+          `;
       }
-      currentY += mainImageHeight + (outputHeight * 0.02); // Gap after main image
+      currentY += mainImageHeight + (outputHeight * 0.02);
 
-      // 5. Draw Logo (if present)
-      if (currentLogoImageDataUrl && previewLogoContainer.style.display !== 'none') {
-        await new Promise((resolve) => {
-          const logoImg = new Image();
-          logoImg.onload = () => {
-            const logoSize = parseFloat(logoSizeInput.value) * (outputWidth / 405); // Scale logo size
-            const logoPadding = parseFloat(logoPaddingInput.value) * (outputWidth / 405); // Scale padding
-            const borderRadius = parseFloat(logoBorderRadiusInput.value) * (outputWidth / 405); // Scale border radius
-            const logoBoxSize = logoSize + (logoPadding * 2);
+      // 5. Logo
+      if (logoImageEncoded && previewLogoContainer.style.display !== 'none') {
+          const logoSize = parseFloat(logoSizeInput.value) * (outputWidth / 405); 
+          const logoPadding = parseFloat(logoPaddingInput.value) * (outputWidth / 405); 
+          const borderRadius = parseFloat(logoBorderRadiusInput.value) * (outputWidth / 405); 
+          const logoBoxSize = logoSize + (logoPadding * 2);
 
-            let logoDrawX, logoDrawY;
+          let logoDrawX, logoDrawY;
 
-            switch (currentLogoPosition) {
+          switch (currentLogoPosition) {
               case 'top-left':
-                logoDrawX = logoMargin;
-                logoDrawY = logoMargin;
-                break;
+                  logoDrawX = mainImageX + logoMargin; // Inside main image area
+                  logoDrawY = mainImageY + logoMargin;
+                  break;
               case 'top-right':
-                logoDrawX = outputWidth - logoBoxSize - logoMargin;
-                logoDrawY = logoMargin;
-                break;
+                  logoDrawX = mainImageX + contentWidth - logoBoxSize - logoMargin;
+                  logoDrawY = mainImageY + logoMargin;
+                  break;
               case 'bottom-left':
-                logoDrawX = logoMargin;
-                logoDrawY = mainImageY + mainImageHeight - logoBoxSize - logoMargin; // Position relative to main image bottom
-                break;
+                  logoDrawX = mainImageX + logoMargin;
+                  logoDrawY = mainImageY + mainImageHeight - logoBoxSize - logoMargin;
+                  break;
               case 'bottom-right':
-                logoDrawX = outputWidth - logoBoxSize - logoMargin;
-                logoDrawY = mainImageY + mainImageHeight - logoBoxSize - logoMargin; // Position relative to main image bottom
-                break;
-            }
+                  logoDrawX = mainImageX + contentWidth - logoBoxSize - logoMargin;
+                  logoDrawY = mainImageY + mainImageHeight - logoBoxSize - logoMargin;
+                  break;
+          }
 
-            // Draw logo container
-            ctx.save();
-            ctx.fillStyle = 'rgba(0,0,0,0.3)'; // Black with 30% opacity
-            ctx.strokeStyle = 'rgba(255,255,255,0.2)'; // White with 20% opacity
-            ctx.lineWidth = 2 * (outputWidth / 405); // Scale border width
-            
-            roundRect(ctx, logoDrawX, logoDrawY, logoBoxSize, logoBoxSize, borderRadius);
-            ctx.fill();
-            ctx.stroke();
-            ctx.clip(); // Clip to the rounded rectangle for the logo image
-
-            // Draw logo image inside the container
-            ctx.drawImage(logoImg, logoDrawX + logoPadding, logoDrawY + logoPadding, logoSize, logoSize);
-            ctx.restore();
-            resolve();
-          };
-          logoImg.onerror = () => {
-              console.error("Failed to load logo image for canvas.");
-              resolve();
-          };
-          logoImg.src = currentLogoImageDataUrl;
-        });
+          svgContent += `
+            <defs>
+              <filter id="logoShadow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
+                <feOffset dx="0" dy="0"/>
+                <feMerge>
+                  <feMergeNode/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <clipPath id="logoClip">
+                <rect x="${logoDrawX}" y="${logoDrawY}" width="${logoBoxSize}" height="${logoBoxSize}" rx="${borderRadius}" ry="${borderRadius}" />
+              </clipPath>
+            </defs>
+            <rect x="${logoDrawX}" y="${logoDrawY}" width="${logoBoxSize}" height="${logoBoxSize}" rx="${borderRadius}" ry="${borderRadius}" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.2)" stroke-width="${2 * (outputWidth / 405)}" filter="url(#logoShadow)" />
+            <image href="${logoImageEncoded}" x="${logoDrawX + logoPadding}" y="${logoDrawY + logoPadding}" width="${logoSize}" height="${logoSize}" clip-path="url(#logoClip)" />
+          `;
       }
 
 
-      // 6. Draw Bottom Separator
-      ctx.fillStyle = 'rgba(66, 153, 225, 0.3)'; // blue-400/30
-      ctx.fillRect(outputWidth * 0.25, currentY, outputWidth * 0.5, 2);
-      currentY += (outputHeight * 0.02); // Gap after separator
+      // 6. Bottom Separator
+      svgContent += `<rect x="${outputWidth * 0.25}" y="${currentY}" width="${outputWidth * 0.5}" height="2" fill="rgba(66, 153, 225, 0.3)" />`;
+      currentY += (outputHeight * 0.02);
 
-      // 7. Draw News Body
+      // 7. News Body
       const newsBodyText = newsBodyInput.value;
-      const newsBodyFontSize = parseFloat(newsBodySizeInput.value) * (outputWidth / 405); // Scale font size
-      const newsBodyFontFamily = fontFamilySelect.value;
+      const newsBodyFontSize = parseFloat(newsBodySizeInput.value) * (outputWidth / 405);
       const newsBodyColor = newsBodyColorInput.value;
       const newsBodyShadowColor = newsBodyShadowColorInput.value;
       const newsBodyShadowBlur = parseFloat(newsBodyShadowBlurInput.value) * (outputWidth / 405);
+      const newsBodyShadowOffsetY = 1 * (outputWidth / 405);
 
-      ctx.save();
-      ctx.font = `normal ${newsBodyFontSize}px "${newsBodyFontFamily}"`;
-      ctx.textAlign = 'center';
-      ctx.fillStyle = newsBodyColor;
-      ctx.shadowColor = newsBodyShadowColor;
-      ctx.shadowBlur = newsBodyShadowBlur;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 1 * (outputWidth / 405); // Scale shadow offset
-
-      const wrappedNewsBody = wrapText(ctx, newsBodyText, contentWidth);
-      const newsBodyLineHeight = newsBodyFontSize * 1.2;
+      tempCtx.font = `normal ${newsBodyFontSize}px "${fontFamily}"`;
+      const wrappedNewsBody = wrapText(tempCtx, newsBodyText, contentWidth);
+      const newsBodyLineHeight = newsBodyFontSize * textLineHeightRatio;
       const newsBodyBoxHeight = wrappedNewsBody.length * newsBodyLineHeight + (padding * 0.5);
       const newsBodyBoxY = currentY;
 
-      // Draw background for news body
-      ctx.shadowBlur = 0; // Disable shadow for background box
-      ctx.fillStyle = 'rgba(0,0,0,0.5)'; // Black with 50% opacity
-      roundRect(ctx, padding, newsBodyBoxY, contentWidth, newsBodyBoxHeight, 15); // Rounded rect for news body box
-      ctx.fill();
+      // News Body Background Box
+      svgContent += `
+        <rect x="${padding}" y="${newsBodyBoxY}" width="${contentWidth}" height="${newsBodyBoxHeight}" rx="15" ry="15" fill="rgba(0,0,0,0.5)" />
+      `;
 
-      // Redraw text with shadow
-      ctx.fillStyle = newsBodyColor;
-      ctx.shadowBlur = newsBodyShadowBlur;
-      ctx.shadowOffsetY = 1 * (outputWidth / 405);
-
+      // News Body Text
       currentY = newsBodyBoxY + (padding * 0.25) + newsBodyLineHeight / 2;
+      svgContent += `<text x="${outputWidth / 2}" text-anchor="middle" font-family="${fontFamily}" font-weight="normal" font-size="${newsBodyFontSize}px" fill="${newsBodyColor}" style="filter:drop-shadow(0px ${newsBodyShadowOffsetY}px ${newsBodyShadowBlur}px ${newsBodyShadowColor});">`;
       for (let i = 0; i < wrappedNewsBody.length; i++) {
-          ctx.fillText(wrappedNewsBody[i], outputWidth / 2, currentY);
+          svgContent += `<tspan x="${outputWidth / 2}" y="${currentY}">${wrappedNewsBody[i]}</tspan>`;
           currentY += newsBodyLineHeight;
       }
-      ctx.restore();
-      currentY = newsBodyBoxY + newsBodyBoxHeight + (outputHeight * 0.03); // Gap after news body box
+      svgContent += `</text>`;
+      currentY = newsBodyBoxY + newsBodyBoxHeight + (outputHeight * 0.03); 
 
-      // 8. Draw Like & Subscribe CTA
-      ctx.save();
-      ctx.font = `bold ${newsBodyFontSize * 0.8}px "${newsBodyFontFamily}"`; // Slightly smaller font
-      ctx.fillStyle = 'white';
-      ctx.shadowColor = 'rgba(0,0,0,0.5)';
-      ctx.shadowBlur = 3;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 1;
+      // 8. Like & Subscribe CTA
+      const ctaFontSize = newsBodyFontSize * 0.8;
+      const iconSize = newsBodyFontSize;
+      const textGap = iconSize * 0.3;
+      
+      tempCtx.font = `bold ${ctaFontSize}px "${fontFamily}"`;
+      const likeTextWidth = tempCtx.measureText('إعجاب').width;
+      const subscribeTextWidth = tempCtx.measureText('اشتراك').width;
+      const separatorWidth = 2; // Fixed width for separator
+      const separatorGap = outputWidth * 0.03; // Gap around separator
 
-      const iconSize = newsBodyFontSize; // Roughly size icons with body font
-      const textGap = iconSize * 0.3; // Gap between icon and text
-      const totalCtaWidth = (iconSize + ctx.measureText('إعجاب').width + textGap) + (iconSize + ctx.measureText('اشتراك').width + textGap) + (outputWidth * 0.03); // Total width with separator
-
+      const totalCtaWidth = (iconSize + likeTextWidth + textGap) + separatorWidth + separatorGap + (iconSize + subscribeTextWidth + textGap);
       let ctaStartX = (outputWidth - totalCtaWidth) / 2;
+      const ctaY = currentY + (iconSize * 0.2); // Align icons vertically
 
-      // Draw Like
-      await new Promise((resolve) => {
-        const likeImg = new Image();
-        likeImg.onload = () => {
-          ctx.drawImage(likeImg, ctaStartX, currentY, iconSize, iconSize);
-          ctx.fillText('إعجاب', ctaStartX + iconSize + textGap, currentY + iconSize * 0.75);
-          resolve();
-        };
-        likeImg.onerror = resolve; // Continue even if icon fails
-        likeImg.src = likeIconSVG;
-      });
+      // Like
+      svgContent += `<image href="${likeIconSVG}" x="${ctaStartX}" y="${ctaY}" width="${iconSize}" height="${iconSize}" />`;
+      svgContent += `<text x="${ctaStartX + iconSize + textGap}" y="${ctaY + iconSize * 0.75}" text-anchor="start" font-family="${fontFamily}" font-weight="bold" font-size="${ctaFontSize}px" fill="white" style="filter:drop-shadow(0px 1px 3px rgba(0,0,0,0.5));">إعجاب</text>`;
       
-      ctaStartX += iconSize + ctx.measureText('إعجاب').width + textGap;
+      ctaStartX += iconSize + likeTextWidth + textGap;
 
-      // Draw separator
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
-      ctx.fillRect(ctaStartX + (outputWidth * 0.015), currentY, 2, iconSize);
-      ctaStartX += (outputWidth * 0.03); // Move past separator
+      // Separator
+      svgContent += `<rect x="${ctaStartX + (separatorGap/2) - (separatorWidth/2)}" y="${ctaY}" width="${separatorWidth}" height="${iconSize}" fill="rgba(255,255,255,0.3)" />`;
+      ctaStartX += separatorGap; 
 
-      // Draw Subscribe
-      await new Promise((resolve) => {
-        const subImg = new Image();
-        subImg.onload = () => {
-          ctx.drawImage(subImg, ctaStartX, currentY, iconSize, iconSize);
-          ctx.fillText('اشتراك', ctaStartX + iconSize + textGap, currentY + iconSize * 0.75);
-          resolve();
-        };
-        subImg.onerror = resolve; // Continue even if icon fails
-        subImg.src = subscribeIconSVG;
-      });
-      
-      ctx.restore();
+      // Subscribe
+      svgContent += `<image href="${subscribeIconSVG}" x="${ctaStartX}" y="${ctaY}" width="${iconSize}" height="${iconSize}" />`;
+      svgContent += `<text x="${ctaStartX + iconSize + textGap}" y="${ctaY + iconSize * 0.75}" text-anchor="start" font-family="${fontFamily}" font-weight="bold" font-size="${ctaFontSize}px" fill="white" style="filter:drop-shadow(0px 1px 3px rgba(0,0,0,0.5));">اشتراك</text>`;
 
-      return canvas;
+      const fullSvg = `
+        <svg width="${outputWidth}" height="${outputHeight}" viewBox="0 0 ${outputWidth} ${outputHeight}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <style type="text/css">
+            /* Embed Google Fonts */
+            @font-face {
+              font-family: 'Cairo';
+              src: url('https://fonts.gstatic.com/s/cairo/v14/SLXGc1nY6HgpAnUpl_2z7LQ.woff2') format('woff2');
+              font-weight: 400;
+              font-style: normal;
+            }
+            @font-face {
+              font-family: 'Cairo';
+              src: url('https://fonts.gstatic.com/s/cairo/v14/SLXGc1nY6HgpAnUpl_4z7LQ.woff2') format('woff2');
+              font-weight: 700;
+              font-style: normal;
+            }
+            @font-face {
+              font-family: 'Cairo';
+              src: url('https://fonts.gstatic.com/s/cairo/v14/SLXGc1nY6HgpAnUpl_8z7LQ.woff2') format('woff2');
+              font-weight: 900;
+              font-style: normal;
+            }
+            /* Add other fonts if needed for full robustness */
+            @font-face {
+              font-family: 'Tajawal';
+              src: url('https://fonts.gstatic.com/s/tajawal/v9/IpdQWfCYuG7X6XM2g_lQvAM.woff2') format('woff2');
+              font-weight: 400;
+              font-style: normal;
+            }
+            @font-face {
+              font-family: 'Tajawal';
+              src: url('https://fonts.gstatic.com/s/tajawal/v9/IpdQWfCYuG7X6XM2g_lQuwM.woff2') format('woff2');
+              font-weight: 700;
+              font-style: normal;
+            }
+            @font-face {
+              font-family: 'Almarai';
+              src: url('https://fonts.gstatic.com/s/almarai/v7/tssoApxBaigK_hG_n_i-j32J.woff2') format('woff2');
+              font-weight: 400;
+              font-style: normal;
+            }
+            @font-face {
+              font-family: 'Almarai';
+              src: url('https://fonts.gstatic.com/s/almarai/v7/tssoApxBaigK_hG_n_iyj32J.woff2') format('woff2');
+              font-weight: 700;
+              font-style: normal;
+            }
+          </style>
+          ${svgContent}
+        </svg>
+      `;
+      return fullSvg;
     }
 
-    // Helper to wrap text for canvas
+    // Helper to wrap text for SVG <text> elements
     function wrapText(context, text, maxWidth) {
       const words = text.split(' ');
       const lines = [];
@@ -749,19 +900,6 @@
       return lines;
     }
 
-    // Helper to draw a rounded rectangle
-    function roundRect(ctx, x, y, width, height, radius) {
-      if (width < 2 * radius) radius = width / 2;
-      if (height < 2 * radius) radius = height / 2;
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.arcTo(x + width, y, x + width, y + height, radius);
-      ctx.arcTo(x + width, y + height, x, y + height, radius);
-      ctx.arcTo(x, y + height, x, y, radius);
-      ctx.arcTo(x, y, x + width, y, radius);
-      ctx.closePath();
-    }
-
 
     // --- Event Listeners ---
     headlineInput.addEventListener('input', updateHeadline);
@@ -779,7 +917,7 @@
     newsBodyShadowColorInput.addEventListener('input', updateNewsBodyShadow);
     newsBodyShadowBlurInput.addEventListener('input', updateNewsBodyShadow);
 
-    mainImageInput.addEventListener('change', (event) => {
+    mainImageInput.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
@@ -789,12 +927,12 @@
         };
         reader.readAsDataURL(file);
       } else {
-        currentMainImageDataUrl = null;
-        updateMainImageDisplay();
+        currentMainImageDataUrl = defaultMainImage; // Revert to default
+        await updateMainImageDisplay();
       }
     });
 
-    logoImageInput.addEventListener('change', (event) => {
+    logoImageInput.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
@@ -804,8 +942,8 @@
         };
         reader.readAsDataURL(file);
       } else {
-        currentLogoImageDataUrl = null;
-        updateLogoDisplay();
+        currentLogoImageDataUrl = defaultLogoImage; // Revert to default
+        await updateLogoDisplay();
       }
     });
 
@@ -821,14 +959,30 @@
       exportLoading.classList.remove('hidden');
 
       try {
-        const canvas = await drawCanvasImage(); // Use our custom drawing function
+        const svgString = await generateSVGString();
+        const svgDataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
+
+        const img = new Image();
+        img.src = svgDataUrl;
+
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
         const link = document.createElement('a');
         link.download = `short-image-${Date.now()}.jpg`;
         link.href = canvas.toDataURL('image/jpeg', 0.95); 
         link.click();
       } catch (error) {
           console.error("Error exporting image:", error);
-          alert("حدث خطأ أثناء تصدير الصورة. يرجى المحاولة مرة أخرى. (خطأ في رسم Canvas)");
+          alert("حدث خطأ أثناء تصدير الصورة. يرجى المحاولة مرة أخرى. (خطأ في SVG أو Canvas)");
       } finally {
           exportButton.disabled = false;
           exportButtonText.classList.remove('hidden');
@@ -852,7 +1006,12 @@
       });
     }
 
-    function initializeApp() {
+    async function initializeApp() {
+      // Load default images first and convert them to Data URLs
+      // This prevents CORS issues even with default images
+      await updateMainImageDisplay(); 
+      await updateLogoDisplay();
+      
       updateHeadline();
       updateNewsBody();
       updateFontFamily();
@@ -860,11 +1019,7 @@
       updateLogoStyles();
       updateHeadlineShadow();
       updateNewsBodyShadow();
-      currentLogoImageDataUrl = placeholderLogo; 
-      updateLogoDisplay();
-      updateMainImageDisplay(); 
       initializePalettes();
-      // The default palette is already set in the HTML for the preview
     }
 
     initializeApp();
