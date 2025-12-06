@@ -10,29 +10,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    /* Custom CSS to replace Tailwind classes and introduce new design */
+    /* Custom CSS to replace Tailwind classes */
     :root {
-      --bg-dark: #1a202c; /* Deeper dark for background */
-      --bg-panel: #2d3748; /* Slightly lighter for panels */
-      --bg-card: #2f3b4d; /* Background for individual cards/sections within panel */
-      --bg-accordion: #3a475a; /* Even lighter for accordion summary */
-      --border-color: #4a5568; /* Darker border */
-      --text-light: #edf2f7; /* Off-white for general text */
-      --text-muted: #a0aec0; /* Lighter gray for labels */
-      --text-placeholder: #718096; /* Gray for placeholders */
-      --blue-main: #3498db; /* A vibrant blue */
-      --blue-hover: #2980b9; /* Darker blue on hover */
-      --blue-accent: #60a5fa; /* Lighter blue for highlights */
-      --blue-gradient-from: #3498db;
-      --blue-gradient-to: #2ecc71; /* Greenish teal for contrast */
-      --button-gradient-from: #3498db;
-      --button-gradient-to: #2ecc71;
-      --button-hover-from: #2980b9;
-      --button-hover-to: #27ae60;
-      --red-heart: #e74c3c;
-      --yellow-star: #f1c40f;
-      --shadow-light: rgba(0, 0, 0, 0.15);
-      --shadow-dark: rgba(0, 0, 0, 0.3);
+      --bg-dark: #1f2937; /* gray-900 */
+      --bg-panel: #374151; /* gray-800 */
+      --bg-accordion: rgba(55, 65, 81, 0.5); /* gray-700/50 */
+      --border-color: #4b5563; /* gray-700 */
+      --text-light: #f3f4f6; /* gray-100 */
+      --text-muted: #d1d5db; /* gray-300 */
+      --text-placeholder: #9ca3af; /* gray-500 */
+      --blue-main: #2563eb; /* blue-600 */
+      --blue-hover: #1d4ed8; /* blue-700 */
+      --blue-gradient-from: #60a5fa; /* blue-400 */
+      --blue-gradient-to: #5eead4; /* teal-300 */
+      --button-gradient-from: #3b82f6; /* blue-500 */
+      --button-gradient-to: #2dd4bf; /* teal-400 */
+      --button-hover-from: #2563eb; /* blue-600 */
+      --button-hover-to: #14b8a6; /* teal-500 */
+      --red-heart: #ef4444; /* red-500 */
+      --yellow-star: #facc15; /* yellow-400 */
     }
 
     body {
@@ -41,88 +37,88 @@
       color: var(--text-light);
       margin: 0;
       padding: 0;
-      direction: rtl;
-      line-height: 1.6;
+      direction: rtl; /* Ensure RTL direction is applied */
     }
 
     main {
       min-height: 100vh;
-      padding: 1rem;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      padding: 1rem; /* p-4 */
     }
-    @media (min-width: 640px) {
+    @media (min-width: 640px) { /* sm:p-6 */
       main { padding: 1.5rem; }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) { /* lg:p-8 */
       main { padding: 2rem; }
     }
 
     .container {
-      max-width: 80rem;
+      max-width: 80rem; /* max-w-7xl */
       margin-left: auto;
       margin-right: auto;
     }
 
     header {
       text-align: center;
-      margin-bottom: 2.5rem; /* Increased margin for better separation */
+      margin-bottom: 2rem; /* mb-8 */
     }
 
     .main-title {
-      font-size: 2.5rem; /* Slightly larger */
-      line-height: 1.2;
-      font-weight: 800;
+      font-size: 2.25rem; /* text-4xl */
+      line-height: 2.5rem;
+      font-weight: 800; /* font-extrabold */
       background-image: linear-gradient(to right, var(--blue-gradient-from), var(--blue-gradient-to));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      color: transparent;
-      letter-spacing: -0.025em; /* Slightly tighter */
+      color: transparent; /* fallback for non-webkit */
     }
-    @media (min-width: 640px) {
-      .main-title { font-size: 3.5rem; }
+    @media (min-width: 640px) { /* sm:text-5xl */
+      .main-title { font-size: 3rem; line-height: 1; }
     }
 
     .subtitle {
-      margin-top: 0.75rem;
-      font-size: 1.25rem; /* Slightly larger */
-      line-height: 1.5;
-      color: var(--text-muted);
+      margin-top: 0.5rem; /* mt-2 */
+      font-size: 1.125rem; /* text-lg */
+      line-height: 1.75rem;
+      color: var(--text-muted); /* text-gray-400 */
     }
 
     .flex-container {
       display: flex;
       flex-direction: column;
-      gap: 2.5rem; /* Increased gap */
+      gap: 2rem; /* gap-8 */
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1024px) { /* lg:flex-row */
       .flex-container { flex-direction: row; }
     }
 
-    /* Controls Panel - NEW DESIGN */
+    /* Controls Panel */
     .controls-panel {
       width: 100%;
       background-color: var(--bg-panel);
-      padding: 1.5rem;
-      border-radius: 1.25rem; /* More rounded */
-      box-shadow: 0 10px 20px var(--shadow-dark); /* Deeper shadow */
+      padding: 1.5rem; /* p-6 */
+      border-radius: 1rem; /* rounded-2xl */
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-lg */
       border: 1px solid var(--border-color);
     }
-    @media (min-width: 1024px) {
-      .controls-panel { width: 33.333333%; }
+    @media (min-width: 1024px) { /* lg:w-1/3 */
+      .controls-panel { flex: 0 0 33.333333%; max-width: 33.333333%; } /* Fixed width for better layout */
     }
 
     .panel-title {
-      font-size: 1.75rem; /* Slightly larger */
-      font-weight: 700;
-      margin-bottom: 1.5rem; /* More spacing */
-      color: var(--blue-accent); /* Highlighted title */
+      font-size: 1.5rem; /* text-2xl */
+      line-height: 2rem;
+      font-weight: 700; /* font-bold */
+      margin-bottom: 1rem; /* mb-4 */
     }
 
-    .space-y-4 > *:not(:last-child) { /* Adjusted spacing */
-      margin-bottom: 1rem;
+    .space-y-3 > *:not(:last-child) {
+      margin-bottom: 0.75rem; /* space-y-3 */
     }
 
-    /* Accordion - Card Style */
+    /* Accordion */
     details > summary {
       list-style: none;
     }
@@ -134,95 +130,78 @@
     }
 
     .accordion-item {
-      background-color: var(--bg-card); /* Card background */
-      border-radius: 0.75rem; /* Rounded corners for cards */
+      background-color: var(--bg-accordion);
+      border-radius: 0.5rem; /* rounded-lg */
       overflow: hidden;
-      box-shadow: 0 4px 8px var(--shadow-light); /* Card shadow */
-      transition: all 0.2s ease-in-out;
+      margin-bottom: 0.75rem; /* Add margin between accordion items */
     }
-    .accordion-item:hover {
-        box-shadow: 0 6px 12px var(--shadow-dark);
+    .accordion-item:last-child {
+        margin-bottom: 0;
     }
-
 
     .accordion-summary {
-      padding: 1rem 1.25rem; /* More padding */
-      font-weight: 600;
+      padding: 1rem; /* p-4 */
+      font-weight: 600; /* font-semibold */
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: var(--bg-accordion); /* Distinct background for summary */
-      border-bottom: 1px solid var(--border-color); /* Separator */
-      color: var(--text-light);
-      transition: background-color 0.2s ease-in-out;
-    }
-    .accordion-summary:hover {
-        background-color: #4a5568; /* Darker on hover */
-    }
-    .accordion-summary svg {
-        transition: transform 0.2s ease-in-out;
-        color: var(--blue-accent);
-    }
-    .accordion-summary span {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .accordion-summary .icon {
-        color: var(--blue-accent);
     }
 
     .accordion-content {
-      padding: 1.25rem; /* More padding */
-      border-top: none; /* No top border now */
+      padding: 1rem; /* p-4 */
+      border-top: 1px solid var(--border-color);
     }
     .accordion-content > *:not(:last-child) {
-      margin-bottom: 1rem;
+      margin-bottom: 1rem; /* space-y-4 */
     }
 
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 1rem; /* Equivalent to space-y-4 for individual groups */
+    }
+    .accordion-content .form-group:last-child {
+      margin-bottom: 0; /* Remove margin from last form group in accordion content */
     }
 
     .form-label {
       display: block;
-      font-size: 0.9rem; /* Slightly larger */
-      font-weight: 500;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem; /* More spacing */
+      font-size: 0.875rem; /* text-sm */
+      line-height: 1.25rem;
+      font-weight: 500; /* font-medium */
+      color: var(--text-muted); /* text-gray-300 */
+      margin-bottom: 0.25rem; /* mb-1 */
     }
 
     .form-input, .form-textarea, .form-select {
       width: 100%;
-      background-color: #242d3b; /* Darker input background */
-      border: 1px solid #4a5568;
-      border-radius: 0.5rem; /* More rounded inputs */
-      padding: 0.6rem 0.8rem; /* Adjusted padding */
+      background-color: var(--bg-panel); /* bg-gray-700 */
+      border: 1px solid var(--border-color);
+      border-radius: 0.375rem; /* rounded-md */
+      padding: 0.5rem; /* p-2 */
       color: var(--text-light);
       transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
     .form-input:focus, .form-textarea:focus, .form-select:focus {
       outline: none;
-      border-color: var(--blue-main);
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3); /* Blue shadow */
+      border-color: var(--blue-main); /* focus:border-blue-500 */
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); /* focus:ring-blue-500 */
     }
 
     .color-input {
       width: 100%;
-      height: 2.8rem; /* Slightly taller */
-      padding: 0.2rem;
-      background-color: #242d3b;
-      border: 1px solid #4a5568;
-      border-radius: 0.5rem;
+      height: 2.5rem; /* h-10 */
+      padding: 0.25rem; /* p-1 */
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 0.375rem;
       cursor: pointer;
     }
 
     .range-input {
       width: 100%;
-      height: 0.4rem; /* Thinner range */
-      background-color: #4a5568;
-      border-radius: 0.25rem; /* Rounded track */
+      height: 0.5rem; /* h-2 */
+      background-color: #4b5563; /* bg-gray-600 */
+      border-radius: 0.5rem;
       -webkit-appearance: none;
       appearance: none;
       cursor: pointer;
@@ -230,29 +209,21 @@
     .range-input::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 1.2rem; /* Larger thumb */
-      height: 1.2rem;
+      width: 1rem; /* 16px */
+      height: 1rem; /* 16px */
       border-radius: 50%;
       background: var(--blue-main);
       cursor: pointer;
-      margin-top: -0.4rem; /* Adjust to center the thumb */
-      box-shadow: 0 0 0 3px var(--bg-card); /* Accent border around thumb */
-      transition: background-color 0.2s ease-in-out;
-    }
-    .range-input::-webkit-slider-thumb:hover {
-        background-color: var(--blue-hover);
+      margin-top: -0.25rem; /* Adjust to center the thumb */
+      box-shadow: 0 0 0 2px var(--bg-panel);
     }
     .range-input::-moz-range-thumb {
-      width: 1.2rem;
-      height: 1.2rem;
+      width: 1rem;
+      height: 1rem;
       border-radius: 50%;
       background: var(--blue-main);
       cursor: pointer;
-      box-shadow: 0 0 0 3px var(--bg-card);
-      transition: background-color 0.2s ease-in-out;
-    }
-    .range-input::-moz-range-thumb:hover {
-        background-color: var(--blue-hover);
+      box-shadow: 0 0 0 2px var(--bg-panel);
     }
 
     .file-input-label {
@@ -261,24 +232,22 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0.75rem; /* More gap */
+      gap: 0.5rem; /* gap-2 */
       background-color: var(--blue-main);
       color: white;
-      font-weight: 700;
-      padding: 1.25rem; /* More padding */
-      border-radius: 0.6rem; /* More rounded */
+      font-weight: 700; /* font-bold */
+      padding: 1rem; /* py-4 px-4 */
+      border-radius: 0.375rem; /* rounded-md */
       cursor: pointer;
-      transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.2s ease-in-out;
-      border: 2px dashed var(--blue-accent);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+      border: 2px dashed #60a5fa; /* border-blue-400 */
     }
     .file-input-label:hover {
       background-color: var(--blue-hover);
-      border-color: #85c1e9; /* Lighter blue on hover */
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      border-color: #93c5fd; /* hover:border-blue-300 */
     }
-    .file-input-label-small {
-      padding: 0.75rem 1rem;
+    .file-input-label-small { /* For logo input */
+      padding: 0.5rem 1rem; /* py-2 px-4 */
       flex-direction: row;
     }
     .hidden {
@@ -288,66 +257,33 @@
     .grid-cols-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
+      gap: 1rem; /* gap-4 */
     }
     .grid-cols-2.gap-2 {
-      gap: 0.5rem;
+      gap: 0.5rem; /* specifically for logo position */
     }
 
     .text-shadow-section {
       border-top: 1px solid var(--border-color);
-      padding-top: 1.25rem;
-      margin-top: 1.25rem; /* Added margin-top */
+      padding-top: 1rem; /* pt-4 */
+      margin-top: 1rem; /* Add margin for separation */
     }
     .text-shadow-section h4 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--blue-accent);
-      margin-bottom: 0.75rem;
+      font-size: 1rem; /* text-md */
+      font-weight: 600; /* font-semibold */
+      margin-bottom: 0.5rem; /* Add margin below title */
     }
     .text-shadow-control {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1rem; /* gap-4 */
     }
     .text-shadow-control .flex-grow {
       flex-grow: 1;
     }
     .text-shadow-control label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 0.25rem;
-    }
-
-    /* Buttons for logo position */
-    .btn {
-      padding: 0.6rem 0.8rem;
-      border-radius: 0.5rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-      border: none;
-    }
-    .btn-primary {
-      background-color: var(--blue-main);
-      color: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    .btn-primary:hover {
-      background-color: var(--blue-hover);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
-    .btn-secondary {
-      background-color: var(--bg-accordion);
-      color: var(--text-light);
-    }
-    .btn-secondary:hover {
-      background-color: #4a5568;
-    }
-    .btn-sm {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.8rem;
+      font-size: 0.75rem; /* text-xs */
+      color: #9ca3af; /* text-gray-400 */
     }
 
 
@@ -359,8 +295,8 @@
       align-items: center;
       justify-content: center;
     }
-    @media (min-width: 1024px) {
-      .preview-panel-wrapper { width: 66.666667%; }
+    @media (min-width: 1024px) { /* lg:w-2/3 */
+      .preview-panel-wrapper { flex: 0 0 66.666667%; max-width: 66.666667%; } /* Fixed width for better layout */
     }
 
     .image-preview {
@@ -368,16 +304,16 @@
       max-width: 405px;
       aspect-ratio: 9 / 16;
       overflow: hidden;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      padding: 1.5rem;
-      gap: 0.75rem;
+      padding: 1.5rem; /* p-6 */
+      gap: 0.75rem; /* gap-3 */
       transition: all 0.5s ease-in-out;
-      border-radius: 1.5rem; /* More rounded preview */
+      background-color: #000; /* Fallback for palettes */
     }
-    @media (min-width: 640px) {
+    @media (min-width: 640px) { /* sm:p-8 */
       .image-preview { padding: 2rem; }
     }
 
@@ -385,22 +321,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
-      backdrop-filter: blur(10px); /* Stronger blur */
-      padding: 0.75rem 1rem;
-      border-radius: 0.75rem; /* More rounded */
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+      background-color: rgba(0, 0, 0, 0.5); /* bg-black/50 */
+      backdrop-filter: blur(8px); /* backdrop-blur-sm */
+      padding: 0.75rem 1rem; /* px-3 py-6 */
+      border-radius: 0.5rem; /* rounded-lg */
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+      width: 100%; /* Ensure it takes full width */
     }
 
     .preview-headline {
-      font-weight: 900;
+      font-weight: 900; /* font-black */
       text-align: center;
       width: 100%;
       line-height: 1.2;
     }
 
     .preview-body {
-      font-weight: 500;
+      font-weight: 500; /* font-medium */
       text-align: center;
       width: 100%;
       line-height: 1.5;
@@ -411,20 +348,20 @@
       width: 50%;
       margin-left: auto;
       margin-right: auto;
-      background-color: rgba(96, 165, 250, 0.4); /* Slightly stronger divider */
+      background-color: rgba(96, 165, 250, 0.3); /* bg-blue-400/30 */
     }
 
     .main-image-container {
       position: relative;
       width: 100%;
       margin-top: auto;
-      margin-bottom: auto;
+      margin-bottom: auto; /* my-auto */
       flex-grow: 1;
-      border-radius: 1rem; /* More rounded */
+      border-radius: 0.75rem; /* rounded-xl */
       overflow: hidden;
-      background-color: rgba(55, 65, 81, 0.6); /* Slightly darker placeholder */
-      border: 2px solid rgba(55, 65, 81, 0.6);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      background-color: rgba(55, 65, 81, 0.5); /* bg-gray-700/50 */
+      border: 2px solid rgba(55, 65, 81, 0.5); /* border-gray-700/50 */
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-md */
     }
 
     .preview-main-image {
@@ -442,9 +379,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text-placeholder);
+      color: var(--text-placeholder); /* text-gray-500 */
       text-align: center;
-      padding: 1rem;
+      padding: 1rem; /* p-4 */
     }
 
     .logo-container {
@@ -452,13 +389,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: rgba(0, 0, 0, 0.4); /* Slightly darker logo background */
-      backdrop-filter: blur(6px); /* Stronger blur */
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-      border: 2px solid rgba(255, 255, 255, 0.3); /* Stronger border */
+      background-color: rgba(0, 0, 0, 0.3); /* bg-black/30 */
+      backdrop-filter: blur(4px); /* backdrop-blur-sm */
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-xl */
+      border: 2px solid rgba(255, 255, 255, 0.2); /* border-white/20 */
       transition: all 0.3s ease-in-out;
     }
-    .logo-container.top-right { top: 1rem; right: 1rem; }
+    .logo-container.top-right { top: 1rem; right: 1rem; } /* For js control */
     .logo-container.top-left { top: 1rem; left: 1rem; }
     .logo-container.bottom-right { bottom: 1rem; right: 1rem; }
     .logo-container.bottom-left { bottom: 1rem; left: 1rem; }
@@ -467,84 +404,84 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2)); /* Stronger drop shadow */
+      filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.07)); /* drop-shadow-lg */
     }
 
     /* CTA (Like & Subscribe) */
     .cta-container {
-      margin-top: auto;
+      margin-top: auto; /* mt-auto */
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 1.25rem; /* More gap */
+      gap: 1rem; /* gap-4 */
       color: white;
-      font-weight: 600;
-      font-size: 0.9rem; /* Slightly larger */
-      padding-top: 1rem;
+      font-weight: 600; /* font-semibold */
+      font-size: 0.875rem; /* text-sm */
+      padding-top: 1rem; /* pt-4 */
     }
 
     .cta-item {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.375rem; /* gap-1.5 */
     }
 
     .cta-divider {
-      height: 1.5rem; /* Taller divider */
+      height: 1.25rem; /* h-5 */
       width: 1px;
-      background-color: rgba(255, 255, 255, 0.4); /* Stronger divider */
+      background-color: rgba(255, 255, 255, 0.3); /* bg-white/30 */
     }
 
     .icon-heart { color: var(--red-heart); }
     .icon-star { color: var(--yellow-star); }
 
     .text-shadow-effect {
-        text-shadow: 0 1px 4px rgba(0,0,0,0.6); /* Stronger text shadow */
+        text-shadow: 0 1px 3px rgba(0,0,0,0.5);
     }
 
     /* Export Button */
     .export-btn {
-      margin-top: 1.5rem;
+      margin-top: 1.5rem; /* mt-6 */
       width: 100%;
       max-width: 405px;
       background-image: linear-gradient(to right, var(--button-gradient-from), var(--button-gradient-to));
       color: white;
-      font-weight: 700;
-      padding: 0.9rem 1.8rem; /* More padding */
-      border-radius: 0.75rem; /* More rounded */
-      font-size: 1.2rem; /* Larger font */
-      transition: transform 0.2s ease-in-out, background-image 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      font-weight: 700; /* font-bold */
+      padding: 0.75rem 1.5rem; /* py-3 px-6 */
+      border-radius: 0.5rem; /* rounded-lg */
+      font-size: 1.125rem; /* text-lg */
+      transition: transform 0.2s ease-in-out, background-image 0.2s ease-in-out;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      text-decoration: none; /* remove underline for button */
+      cursor: pointer;
+      border: none;
     }
     .export-btn:hover {
-      transform: scale(1.03); /* Slightly less aggressive scale */
+      transform: scale(1.05);
       background-image: linear-gradient(to right, var(--button-hover-from), var(--button-hover-to));
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
     .export-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       transform: none;
-      box-shadow: none;
     }
     .export-btn svg {
-      height: 1.6rem; /* Slightly larger icon */
-      width: 1.6rem;
+      height: 1.5rem; /* h-6 */
+      width: 1.5rem; /* w-6 */
       display: inline-block;
-      margin-left: 0.6rem; /* More margin */
+      margin-left: 0.5rem; /* ml-2 */
     }
 
     /* Loading Spinner */
     .spinner {
       animation: spin 1s linear infinite;
       -webkit-animation: spin 1s linear infinite;
-      margin-left: -0.25rem;
-      margin-right: 0.75rem;
-      height: 1.4rem; /* Slightly larger spinner */
-      width: 1.4rem;
+      margin-left: -0.25rem; /* -ml-1 */
+      margin-right: 0.75rem; /* mr-3 */
+      height: 1.25rem; /* h-5 */
+      width: 1.25rem; /* w-5 */
       color: white;
     }
     @keyframes spin {
@@ -560,37 +497,65 @@
     .palette-btn {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.75rem; /* gap-3 */
       width: 100%;
-      padding: 0.6rem; /* More padding */
-      border-radius: 0.5rem;
-      transition: all 0.2s ease-in-out;
-      border: 1px solid transparent; /* default border */
+      padding: 0.5rem; /* p-2 */
+      border-radius: 0.5rem; /* rounded-lg */
+      transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      border: none; /* Ensure no default button border */
+      cursor: pointer;
     }
     .palette-btn-default {
-        background-color: #3f4e62; /* Slightly different gray for palettes */
-        color: var(--text-muted);
+        background-color: var(--bg-panel); /* bg-gray-700 */
     }
     .palette-btn-default:hover {
-        background-color: #4a5a6e;
+        background-color: rgba(55, 65, 81, 0.5); /* hover:bg-gray-600/50 */
     }
     .palette-btn-active {
-        background-color: rgba(52, 152, 219, 0.2); /* Lighter blue background */
-        box-shadow: 0 0 0 2px var(--blue-main); /* Blue ring */
-        border-color: var(--blue-main);
-        color: var(--text-light);
+        background-color: rgba(37, 99, 235, 0.5); /* bg-blue-600/50 */
+        box-shadow: 0 0 0 2px #60a5fa; /* ring-2 ring-blue-400 */
     }
 
     .palette-color-box {
-      width: 2.2rem; /* Slightly larger */
-      height: 2.2rem;
-      border-radius: 0.4rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      width: 2rem; /* w-8 */
+      height: 2rem; /* h-8 */
+      border-radius: 0.375rem; /* rounded-md */
+      border: 1px solid rgba(255, 255, 255, 0.2); /* border-white/20 */
       flex-shrink: 0;
     }
     .palette-name {
-      font-size: 0.9rem;
-      font-weight: 500;
+      font-size: 0.875rem; /* text-sm */
+      font-weight: 500; /* font-medium */
+      color: var(--text-light); /* Ensure text color */
+    }
+
+    /* Specific button styles for logo position */
+    .btn {
+        padding: 0.5rem 1rem; /* py-2 px-4 */
+        border-radius: 0.375rem; /* rounded-md */
+        font-size: 0.75rem; /* text-xs */
+        font-weight: 700;
+        transition: background-color 0.15s ease-in-out;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-primary {
+        background-color: var(--blue-main); /* bg-blue-600 */
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: var(--blue-hover); /* hover:bg-blue-700 */
+    }
+    .btn-secondary {
+        background-color: var(--bg-panel); /* bg-gray-700 */
+        color: var(--text-light);
+    }
+    .btn-secondary:hover {
+        background-color: var(--border-color); /* hover:bg-gray-600 */
+    }
+    .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
     }
   </style>
 </head>
@@ -611,14 +576,11 @@
         <div class="controls-panel">
           <h2 class="panel-title">لوحة التحكم</h2>
           
-          <div class="space-y-4"> <!-- Changed to space-y-4 for consistent card spacing -->
+          <div class="space-y-3">
             <!-- Accordion: Content -->
             <details class="accordion-item" open>
               <summary class="accordion-summary">
-                <span class="flex items-center gap-2">
-                  <svg class="icon h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                  <span>المحتوى</span>
-                </span>
+                <span>المحتوى</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
               </summary>
               <div class="accordion-content">
@@ -643,10 +605,7 @@
             <!-- Accordion: Text Styling -->
              <details class="accordion-item">
               <summary class="accordion-summary">
-                <span class="flex items-center gap-2">
-                  <svg class="icon h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                  <span>تصميم النصوص</span>
-                </span>
+                <span>تصميم النصوص</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
               </summary>
               <div class="accordion-content">
@@ -702,10 +661,7 @@
             <!-- Accordion: Logo Styling -->
             <details class="accordion-item">
               <summary class="accordion-summary">
-                <span class="flex items-center gap-2">
-                  <svg class="icon h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                  <span>تصميم الشعار</span>
-                </span>
+                <span>تصميم الشعار</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
               </summary>
               <div class="accordion-content">
@@ -743,13 +699,10 @@
             <!-- Accordion: Background Palettes -->
              <details class="accordion-item">
               <summary class="accordion-summary">
-                <span class="flex items-center gap-2">
-                  <svg class="icon h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h14a2 2 0 012 2v12a4 4 0 01-4 4H7z"></path></svg>
-                  <span>تصميم الخلفية</span>
-                </span>
+                <span>تصميم الخلفية</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
               </summary>
-              <div id="palettes-container" class="accordion-content space-y-3">
+              <div id="palettes-container" class="accordion-content palette-grid">
                 <!-- Palettes will be dynamically inserted here -->
               </div>
             </details>
@@ -830,7 +783,7 @@
             headline: 'هنا يكتب عنوان الخبر الرئيسي',
             newsBody: 'تفاصيل موجزة عن الخبر لجذب المشاهد. يجب أن تكون قصيرة وواضحة.',
             mainImageUrl: 'https://picsum.photos/720/720',
-            logoImageUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48cGF0aCBkPSJNMTIgMjJWMk0yIDEyaDIwTTUuNSAxOC41QTkgOSAwIDAgMCAxMiAyMiA5IDkgMCAwIDAgMTguNSA1LjUuMTgyODEgMTguNSIvPjwvc3ZnPg==',
+            logoImageUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48cGF0aCBkPSJNMTIgMjJWMk0yIDEyaDIwTTUuNSAxOC41QTkgOSAwIDAgMCAxMiAyMiA5IDkgMCAwIDAgMTguNSA1LjUuMTgyMTIgNTkuNTUiLz48L3N2Zz4=',
             headlineColor: '#FFFFFF',
             headlineSize: 23,
             newsBodyColor: '#E0E0E0',
@@ -1011,14 +964,14 @@
             // Drag and Drop for main image
             dom.mainImageDropArea.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                dom.mainImageDropArea.classList.add('file-input-label-hover'); // Use custom CSS classes if defined
+                dom.mainImageDropArea.classList.add('file-input-label-dragover'); /* Custom class for dragover effect */
             });
             dom.mainImageDropArea.addEventListener('dragleave', (e) => {
-                dom.mainImageDropArea.classList.remove('file-input-label-hover');
+                dom.mainImageDropArea.classList.remove('file-input-label-dragover');
             });
             dom.mainImageDropArea.addEventListener('drop', (e) => {
                 e.preventDefault();
-                dom.mainImageDropArea.classList.remove('file-input-label-hover');
+                dom.mainImageDropArea.classList.remove('file-input-label-dragover');
                 const files = e.dataTransfer.files;
                 if (files.length > 0 && files[0].type.startsWith('image/')) {
                     handleFile(files[0], (url) => { state.mainImageUrl = url; updatePreview(); });
@@ -1126,12 +1079,12 @@
             dom.headlineSizeInput.value = state.headlineSize;
             dom.newsBodySizeInput.value = state.newsBodySize;
             dom.headlineShadowColorInput.value = state.headlineShadowColor;
+            dom.headlineShadowBlurInput.value = state.headlineShadowBlur;
+            dom.newsBodyShadowColorInput.value = state.newsBodyShadowColor;
             dom.newsBodyShadowBlurInput.value = state.newsBodyShadowBlur;
             dom.logoSizeInput.value = state.logoSize;
             dom.logoPaddingInput.value = state.logoPadding;
             dom.logoBorderRadiusInput.value = state.logoBorderRadius;
-            dom.headlineShadowColorInput.value = state.headlineShadowColor;
-            dom.newsBodyShadowColorInput.value = state.newsBodyShadowColor;
 
             // Initialize range value labels
             dom.headlineSizeValue.textContent = state.headlineSize;
