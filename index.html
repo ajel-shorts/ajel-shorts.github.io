@@ -1,720 +1,542 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<title>صانع صور الشورتس الإخبارية – نسخة مطوّرة</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/x-icon" href="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-<style>
-body { font-family: 'Cairo', sans-serif; }
-details>summary { list-style: none; }
-details>summary::-webkit-details-marker { display: none; }
-details[open] > summary svg { transform: rotate(180deg); }
-.draggable { cursor: grab; }
-.draggable:active { cursor: grabbing; }
-/* Dropzone highlight */
-.drop-active { border: 2px dashed #4fd1c5 !important; }
-</style>
+  <meta charset="utf-8" />
+  <title>صانع صور الشورتس الإخبارية</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXGOKSqwfl/oMEAEXpfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    details > summary {
+      list-style: none;
+    }
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+    details[open] > summary svg {
+      transform: rotate(180deg);
+    }
+  </style>
 </head>
-
 <body class="bg-gray-900 text-white">
-<main class="min-h-screen p-6 bg-gray-900">
-<div class="max-w-7xl mx-auto">
+  <main class="min-h-screen bg-gray-900 text-gray-100 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto">
+      <header class="text-center mb-8">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-300">
+          صانع صور الشورتس الإخبارية
+        </h1>
+        <p class="mt-2 text-lg text-gray-400">
+          أنشئ صورًا احترافية وجذابة لفيديوهاتك القصيرة بسهولة.
+        </p>
+      </header>
 
-<header class="text-center mb-8">
-<h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-300">صانع صور الشورتس الإخبارية</h1>
-<p class="mt-2 text-lg text-gray-400">نسخة مطوّرة مع السحب والإفلات + تخصيص كامل.</p>
-</header>
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Controls Panel -->
+        <div class="w-full lg:w-1/3 bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700">
+          <h2 class="text-2xl font-bold mb-4">لوحة التحكم</h2>
+          
+          <div class="space-y-3">
+            <!-- Accordion: Content -->
+            <details class="bg-gray-700/50 rounded-lg overflow-hidden" open>
+              <summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
+                <span>المحتوى</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+              </summary>
+              <div class="p-4 border-t border-gray-600 space-y-4">
+                <div>
+                  <label for="headline-input" class="block text-sm font-medium text-gray-300 mb-1">عنوان الخبر</label>
+                  <input type="text" id="headline-input" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition">
+                </div>
+                <div>
+                  <label for="newsBody-input" class="block text-sm font-medium text-gray-300 mb-1">متن الخبر</label>
+                  <textarea id="newsBody-input" rows="4" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+                </div>
+                 <div>
+                  <label id="mainImage-drop-area" for="mainImage-input" class="w-full flex flex-col items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-md cursor-pointer transition border-2 border-dashed border-blue-400 hover:border-blue-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" /></svg>
+                    <span>اسحب الصورة هنا أو انقر للاختيار</span>
+                  </label>
+                  <input type="file" id="mainImage-input" accept="image/png, image/jpeg, image/webp" class="hidden">
+                </div>
+              </div>
+            </details>
+            
+            <!-- Accordion: Text Styling -->
+             <details class="bg-gray-700/50 rounded-lg overflow-hidden">
+              <summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
+                <span>تصميم النصوص</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+              </summary>
+              <div class="p-4 border-t border-gray-600 space-y-4">
+                <div>
+                  <label for="fontFamily-input" class="block text-sm font-medium text-gray-300 mb-1">نوع الخط</label>
+                  <select id="fontFamily-input" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition">
+                    <option value="Cairo">Cairo</option>
+                    <option value="Tajawal">Tajawal</option>
+                    <option value="Almarai">Almarai</option>
+                  </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                      <label for="headlineColor-input" class="block text-sm font-medium text-gray-300 mb-1">لون العنوان</label>
+                      <input type="color" id="headlineColor-input" class="w-full h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
+                  </div>
+                  <div>
+                      <label for="newsBodyColor-input" class="block text-sm font-medium text-gray-300 mb-1">لون المتن</label>
+                      <input type="color" id="newsBodyColor-input" class="w-full h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
+                  </div>
+                </div>
+                <div>
+                    <label for="headlineSize-input" class="block text-sm font-medium text-gray-300 mb-1">حجم العنوان (<span id="headlineSize-value">40</span>px)</label>
+                    <input type="range" id="headlineSize-input" min="20" max="80" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <div>
+                    <label for="newsBodySize-input" class="block text-sm font-medium text-gray-300 mb-1">حجم المتن (<span id="newsBodySize-value">20</span>px)</label>
+                    <input type="range" id="newsBodySize-input" min="12" max="40" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <div class="border-t border-gray-600 pt-4 space-y-4">
+                   <h4 class="text-md font-semibold">ظل العنوان</h4>
+                   <div class="flex items-center gap-4">
+                      <input type="color" id="headlineShadowColor-input" class="w-10 h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
+                      <div class="flex-grow">
+                        <label class="text-xs text-gray-400">التمويه: <span id="headlineShadowBlur-value">5</span>px</label>
+                        <input type="range" min="0" max="20" id="headlineShadowBlur-input" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                      </div>
+                   </div>
+                </div>
+                <div class="border-t border-gray-600 pt-4 space-y-4">
+                   <h4 class="text-md font-semibold">ظل المتن</h4>
+                   <div class="flex items-center gap-4">
+                      <input type="color" id="newsBodyShadowColor-input" class="w-10 h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
+                      <div class="flex-grow">
+                         <label class="text-xs text-gray-400">التمويه: <span id="newsBodyShadowBlur-value">3</span>px</label>
+                        <input type="range" min="0" max="20" id="newsBodyShadowBlur-input" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                      </div>
+                   </div>
+                </div>
+              </div>
+            </details>
 
-<div class="flex flex-col lg:flex-row gap-8">
+            <!-- Accordion: Logo Styling -->
+            <details class="bg-gray-700/50 rounded-lg overflow-hidden">
+              <summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
+                <span>تصميم الشعار</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+              </summary>
+              <div class="p-4 border-t border-gray-600 space-y-4">
+                <div>
+                   <label for="logoImage-input" class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
+                    <span>تغيير الشعار</span>
+                  </label>
+                  <input type="file" id="logoImage-input" accept="image/png, image/jpeg, image/webp" class="hidden">
+                </div>
+                <div>
+                  <label for="logoSize-input" class="block text-sm font-medium text-gray-300 mb-1">حجم الشعار (<span id="logoSize-value">80</span>px)</label>
+                  <input type="range" id="logoSize-input" min="40" max="150" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <div>
+                  <label for="logoPadding-input" class="block text-sm font-medium text-gray-300 mb-1">تبطين الشعار (<span id="logoPadding-value">8</span>px)</label>
+                  <input type="range" id="logoPadding-input" min="0" max="24" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <div>
+                  <label for="logoBorderRadius-input" class="block text-sm font-medium text-gray-300 mb-1">استدارة الحواف (<span id="logoBorderRadius-value">12</span>px)</label>
+                  <input type="range" id="logoBorderRadius-input" min="0" max="75" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-2">موضع الشعار</label>
+                  <div class="grid grid-cols-2 gap-2" id="logoPosition-buttons">
+                    <button data-position="top-right" class="bg-blue-600 p-2 rounded-md text-xs transition">أعلى اليمين</button>
+                    <button data-position="top-left" class="bg-gray-700 p-2 rounded-md text-xs transition">أعلى اليسار</button>
+                    <button data-position="bottom-right" class="bg-gray-700 p-2 rounded-md text-xs transition">أسفل اليمين</button>
+                    <button data-position="bottom-left" class="bg-gray-700 p-2 rounded-md text-xs transition">أسفل اليسار</button>
+                  </div>
+                </div>
+              </div>
+            </details>
 
-<!-- PANEL -->
-<div class="w-full lg:w-1/3 bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700">
+            <!-- Accordion: Background Palettes -->
+             <details class="bg-gray-700/50 rounded-lg overflow-hidden">
+              <summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
+                <span>تصميم الخلفية</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+              </summary>
+              <div id="palettes-container" class="p-4 border-t border-gray-600 space-y-2">
+                <!-- Palettes will be dynamically inserted here -->
+              </div>
+            </details>
 
-<h2 class="text-2xl font-bold mb-4">لوحة التحكم</h2>
-
-<div class="space-y-3">
-
-<!-- CONTENT -->
-<details class="bg-gray-700/50 rounded-lg overflow-hidden" open>
-<summary class="p-4 font-semibold flex justify-between items-center cursor-pointer">
-<span>المحتوى</span>
-<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-</summary>
-
-<div class="p-4 border-t border-gray-600 space-y-4">
-
-<div>
-<label for="headline-input" class="block text-sm font-medium text-gray-300 mb-1">عنوان الخبر</label>
-<input type="text" id="headline-input" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition">
-</div>
-
-<div>
-<label for="newsBody-input" class="block text-sm font-medium text-gray-300 mb-1">متن الخبر</label>
-<textarea id="newsBody-input" rows="3" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
-</div>
-
-<!-- Image Drop -->
-<div>
-<label class="block text-sm font-medium text-gray-300 mb-1">صورة الخبر (سحب وإفلات أو اختر صورة)</label>
-<div id="image-dropzone" class="w-full h-40 bg-gray-700 border border-gray-500 rounded-md flex items-center justify-center text-gray-400 cursor-pointer hover:border-blue-400 transition">
-أسقط الصورة هنا
-</div>
-<input type="file" id="mainImage-input" accept="image/*" class="hidden">
-<label for="mainImage-input" class="mt-2 w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" /></svg>
-  <span>اختر صورة</span>
-</label>
-</div>
-
-</div>
-</details>
-
-<!-- TEXT DESIGN -->
-<details class="bg-gray-700/50 rounded-lg overflow-hidden">
-<summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
-<span>تصميم النصوص</span>
-<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-</summary>
-
-<div class="p-4 border-t border-gray-600 space-y-4">
-
-<div>
-<label for="fontFamily-input" class="block text-sm font-medium text-gray-300 mb-1">نوع الخط</label>
-<select id="fontFamily-input" class="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white focus:ring-blue-500 focus:border-blue-500 transition">
-<option value="Cairo">Cairo</option>
-<option value="Tajawal">Tajawal</option>
-<option value="Almarai">Almarai</option>
-</select>
-</div>
-
-<div class="grid grid-cols-2 gap-4">
-<div>
-<label for="headlineColor-input" class="block text-sm font-medium text-gray-300 mb-1">لون العنوان</label>
-<input type="color" id="headlineColor-input" class="w-full h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
-</div>
-<div>
-<label for="newsBodyColor-input" class="block text-sm font-medium text-gray-300 mb-1">لون المتن</label>
-<input type="color" id="newsBodyColor-input" class="w-full h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
-</div>
-</div>
-
-<div>
-<label for="headlineSize-input" class="block text-sm font-medium text-gray-300 mb-1">حجم العنوان (<span id="headlineSize-value">40</span>px)</label>
-<input type="range" id="headlineSize-input" min="20" max="80" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
-</div>
-
-<div>
-<label for="newsBodySize-input" class="block text-sm font-medium text-gray-300 mb-1">حجم المتن (<span id="newsBodySize-value">20</span>px)</label>
-<input type="range" id="newsBodySize-input" min="12" max="40" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
-</div>
-
-<div class="border-t border-gray-600 pt-4 space-y-4">
-  <h4 class="text-md font-semibold text-gray-300">ظل العنوان</h4>
-  <div class="flex items-center gap-4">
-    <input type="color" id="headlineShadowColor-input" class="w-10 h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
-    <div class="flex-grow">
-      <label class="text-xs text-gray-400">التمويه: <span id="headlineShadowBlur-value">5</span>px</label>
-      <input type="range" min="0" max="20" id="headlineShadowBlur-input" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
-    </div>
-  </div>
-</div>
-<div class="border-t border-gray-600 pt-4 space-y-4">
-  <h4 class="text-md font-semibold text-gray-300">ظل المتن</h4>
-  <div class="flex items-center gap-4">
-    <input type="color" id="newsBodyShadowColor-input" class="w-10 h-10 p-1 bg-gray-700 border border-gray-600 rounded-md cursor-pointer">
-    <div class="flex-grow">
-      <label class="text-xs text-gray-400">التمويه: <span id="newsBodyShadowBlur-value">3</span>px</label>
-      <input type="range" min="0" max="20" id="newsBodyShadowBlur-input" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
-    </div>
-  </div>
-</div>
-
-</div>
-</details>
-
-<!-- LOGO -->
-<details class="bg-gray-700/50 rounded-lg overflow-hidden">
-<summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
-<span>الشعار</span>
-<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-</summary>
-
-<div class="p-4 border-t border-gray-600 space-y-4">
-
-<div>
-<label class="block text-sm font-medium text-gray-300 mb-1">رفع الشعار (سحب وإفلات أو اختيار)</label>
-<div id="logo-dropzone" class="w-full h-32 bg-gray-700 border border-gray-500 rounded-md flex items-center justify-center text-gray-400 cursor-pointer hover:border-blue-400 transition">
-أسقط الشعار هنا
-</div>
-
-<input type="file" id="logoImage-input" accept="image/*" class="hidden">
-<label for="logoImage-input" class="mt-2 w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
-  <span>اختر شعار</span>
-</label>
-</div>
-
-<div>
-<label for="logoSize-input" class="block text-sm font-medium text-gray-300 mb-1">حجم الشعار (<span id="logoSize-value">80</span>px)</label>
-<input type="range" id="logoSize-input" min="40" max="150" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
-</div>
-
-<div>
-<label for="logoPadding-input" class="block text-sm font-medium text-gray-300 mb-1">تبطين الشعار (<span id="logoPadding-value">8</span>px)</label>
-<input type="range" id="logoPadding-input" min="0" max="24" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
-</div>
-
-<div>
-<label for="logoBorderRadius-input" class="block text-sm font-medium text-gray-300 mb-1">استدارة الحواف (<span id="logoBorderRadius-value">12</span>px)</label>
-<input type="range" id="logoBorderRadius-input" min="0" max="75" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
-</div>
-
-<div>
-  <label class="block text-sm font-medium text-gray-300 mb-2">موضع الشعار (اسحب أو اختر)</label>
-  <div class="grid grid-cols-2 gap-2" id="logoPosition-buttons">
-    <button data-position="top-right" class="bg-blue-600 p-2 rounded-md text-xs transition">أعلى اليمين</button>
-    <button data-position="top-left" class="bg-gray-700 p-2 rounded-md text-xs transition">أعلى اليسار</button>
-    <button data-position="bottom-right" class="bg-gray-700 p-2 rounded-md text-xs transition">أسفل اليمين</button>
-    <button data-position="bottom-left" class="bg-gray-700 p-2 rounded-md text-xs transition">أسفل اليسار</button>
-  </div>
-</div>
-
-</div>
-</details>
-
-<!-- Background Palettes -->
-<details class="bg-gray-700/50 rounded-lg overflow-hidden">
-<summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
-<span>تصميم الخلفية</span>
-<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-</summary>
-<div id="palettes-container" class="p-4 border-t border-gray-600 space-y-2">
-<!-- Palettes will be dynamically inserted here -->
-</div>
-</details>
-
-<!-- EXPORT -->
-<details class="bg-gray-700/50 rounded-lg overflow-hidden">
-<summary class="p-4 font-semibold cursor-pointer flex justify-between items-center">
-<span>خيارات التصدير</span>
-<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-</summary>
-
-<div class="p-4 space-y-3 border-t border-gray-600">
-<label for="export-format" class="block text-sm font-medium text-gray-300 mb-1">صيغة التصدير</label>
-<select id="export-format" class="w-full bg-gray-700 border border-gray-600 p-2 rounded-md text-white focus:ring-blue-500 focus:border-blue-500 transition">
-<option value="jpg">JPG (جودة عالية)</option>
-<option value="png">PNG (للتصميمات ذات الشفافية)</option>
-</select>
-
-<button id="reset-settings" class="w-full bg-red-700 hover:bg-red-800 py-2 rounded-md mt-4 font-bold transition">إعادة ضبط الإعدادات</button>
-</div>
-
-</details>
-
-</div>
-</div>
-
-<!-- PREVIEW AREA -->
-<div class="w-full lg:w-2/3 flex flex-col items-center justify-center">
-<div 
-  id="image-preview"
-  class="w-full max-w-[405px] aspect-[9/16] overflow-hidden shadow-2xl rounded-xl flex flex-col justify-start p-6 sm:p-8 gap-3 transition-all duration-500 relative">
-  
-  <!-- Headline Wrapper -->
-  <div class="bg-black/50 backdrop-blur-sm p-3 rounded-lg shadow-lg">
-    <h2 id="preview-headline" class="font-black text-center w-full"></h2>
-  </div>
-  
-  <div class="h-px w-1/2 mx-auto bg-blue-400/30"></div>
-
-  <div class="relative w-full my-auto flex-grow rounded-xl overflow-hidden bg-gray-700/50 border-2 border-gray-700/50 shadow-md">
-       <img id="preview-mainImage" alt="News image" class="absolute inset-0 w-full h-full object-cover transition-all">
-       
-       <div id="preview-logo-container" class="absolute flex items-center justify-center bg-black/30 backdrop-blur-sm shadow-xl border-2 border-white/20 transition-all duration-300 draggable">
-           <img id="preview-logo" alt="Logo" class="w-full h-full object-contain drop-shadow-lg">
-       </div>
-       <div id="preview-mainImage-placeholder" class="w-full h-full flex items-center justify-center text-gray-500 text-center p-4">
-           <span>اختر صورة للخبر</span>
+          </div>
         </div>
-  </div>
-  
-  <div class="h-px w-1/2 mx-auto bg-blue-400/30"></div>
 
-  <!-- News Body Wrapper -->
-   <div class="bg-black/50 backdrop-blur-sm p-3 rounded-lg shadow-lg">
-    <p id="preview-newsBody" class="font-medium text-center w-full"></p>
-  </div>
+        <!-- Preview Panel -->
+        <div class="w-full lg:w-2/3 flex flex-col items-center justify-center">
+          <div 
+            id="image-preview"
+            class="w-full max-w-[405px] aspect-[9/16] overflow-hidden shadow-2xl flex flex-col justify-start p-6 sm:p-8 gap-3 transition-all duration-500">
+            
+            <div class="bg-black/50 backdrop-blur-sm p-3 rounded-lg shadow-lg">
+              <h2 id="preview-headline" class="font-black text-center w-full"></h2>
+            </div>
+            
+            <div class="h-px w-1/2 mx-auto bg-blue-400/30"></div>
 
-  <!-- Like & Subscribe CTA -->
-  <div class="mt-auto flex items-center justify-center gap-4 text-white font-semibold text-sm pt-4">
-      <div class="flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
-          </svg>
-          <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.5);">إعجاب</span>
+            <div class="relative w-full my-auto flex-grow rounded-xl overflow-hidden bg-gray-700/50 border-2 border-gray-700/50 shadow-md">
+                 <img id="preview-mainImage" alt="News image" class="absolute inset-0 w-full h-full object-cover transition-all">
+                 
+                 <div id="preview-logo-container" class="absolute flex items-center justify-center bg-black/30 backdrop-blur-sm shadow-xl border-2 border-white/20 transition-all duration-300">
+                     <img id="preview-logo" alt="Logo" class="w-full h-full object-contain drop-shadow-lg">
+                 </div>
+                 <div id="preview-mainImage-placeholder" class="hidden w-full h-full flex items-center justify-center text-gray-500 text-center p-4">
+                     <span>اختر صورة للخبر</span>
+                  </div>
+            </div>
+            
+            <div class="h-px w-1/2 mx-auto bg-blue-400/30"></div>
+
+             <div class="bg-black/50 backdrop-blur-sm p-3 rounded-lg shadow-lg">
+              <p id="preview-newsBody" class="font-medium text-center w-full"></p>
+            </div>
+
+            <!-- Like & Subscribe CTA -->
+            <div class="mt-auto flex items-center justify-center gap-4 text-white font-semibold text-sm pt-4">
+                <div class="flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                    </svg>
+                    <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.5);">إعجاب</span>
+                </div>
+                <div class="h-5 w-px bg-white/30"></div>
+                <div class="flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.5);">اشتراك</span>
+                </div>
+            </div>
+          </div>
+
+          <button id="export-button" class="mt-6 w-full max-w-[405px] bg-gradient-to-r from-blue-500 to-teal-400 text-white font-bold py-3 px-6 rounded-lg text-lg hover:from-blue-600 hover:to-teal-500 transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+              <span id="export-button-content">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>تصدير الصورة</span>
+              </span>
+              <span id="export-button-loading" class="hidden">
+                 <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>جاري التصدير...</span>
+              </span>
+          </button>
+        </div>
       </div>
-      <div class="h-5 w-px bg-white/30"></div>
-      <div class="flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-          <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.5);">اشتراك</span>
-      </div>
-  </div>
-</div>
+    </div>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- STATE ---
+        const state = {
+            headline: 'هنا يكتب عنوان الخبر الرئيسي',
+            newsBody: 'تفاصيل موجزة عن الخبر لجذب المشاهد. يجب أن تكون قصيرة وواضحة.',
+            mainImageUrl: 'https://picsum.photos/720/720',
+            logoImageUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48cGF0aCBkPSJNMTIgMjJWMk0yIDEyaDIwTTUuNSAxOC41QTkgOSAwIDAgMCAxMiAyMiA5IDkgMCAwIDAgMTguNSA1LjUiLz48cGF0aCBkPSJNNTUuNSA1LjVBNyA3IDAgMCAxIDEyIDIgNyA3IDAgMCAxIDE4LjUgMTguNSIvPjwvc3ZnPg==',
+            headlineColor: '#FFFFFF',
+            headlineSize: 40,
+            newsBodyColor: '#E0E0E0',
+            newsBodySize: 20,
+            logoPosition: 'top-right',
+            logoSize: 80,
+            logoPadding: 8,
+            logoBorderRadius: 12,
+            fontFamily: 'Cairo',
+            headlineShadowColor: '#000000',
+            headlineShadowBlur: 5,
+            newsBodyShadowColor: '#000000',
+            newsBodyShadowBlur: 3,
+            isExporting: false,
+            activePalette: null
+        };
 
-<button id="export-button" class="mt-6 w-full max-w-[405px] bg-gradient-to-r from-blue-500 to-teal-400 text-white font-bold py-3 px-6 rounded-lg text-lg hover:from-blue-600 hover:to-teal-500 transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
-    <span id="export-button-content">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-      </svg>
-      <span>عرض الصورة لحفظها</span>
-    </span>
-    <span id="export-button-loading" class="hidden">
-       <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-      </svg>
-      <span>جاري التجهيز...</span>
-    </span>
-</button>
+        const palettes = [
+            { name: 'أخبار العالم', css: `repeating-linear-gradient(0deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), radial-gradient(ellipse at center, rgba(14, 29, 61, 1) 0%, rgba(12, 20, 39, 1) 100%)` },
+            { name: 'عاجل وحيوي', css: 'radial-gradient(ellipse at top left, rgba(179, 58, 58, 0.7), transparent 60%), radial-gradient(ellipse at bottom right, rgba(36, 36, 128, 0.6), transparent 70%), #111217' },
+            { name: 'تقني ومستقبلي', css: 'linear-gradient(135deg, #020024 0%, #090979 35%, #00d4ff 100%)' },
+            { name: 'ذهبي فاخر', css: 'radial-gradient(ellipse at bottom, rgba(212, 175, 55, 0.2), transparent 70%), #1a1a1a' },
+            { name: 'أزرق هادئ', css: 'linear-gradient(45deg, #09203f 0%, #537895 100%)' },
+            { name: 'غرافيت داكن', css: 'linear-gradient(160deg, #434343 0%, #1e1e1e 100%)' },
+            { name: 'أحمر ناري', css: 'linear-gradient(135deg, #6d0000 0%, #d32f2f 74%)' },
+            { name: 'موف غامض', css: 'linear-gradient(135deg, #311b92 0%, #7e57c2 100%)' },
+            { name: 'فوشيا عصري', css: 'linear-gradient(45deg, #c51162 0%, #f50057 100%)' },
+            { name: 'سيان حيوي', css: 'linear-gradient(45deg, #004d40 0%, #009688 100%)' }
+        ];
+        state.activePalette = palettes[0];
 
-</div>
+        // --- DOM ELEMENTS ---
+        const dom = {
+            // Inputs
+            headlineInput: document.getElementById('headline-input'),
+            newsBodyInput: document.getElementById('newsBody-input'),
+            mainImageInput: document.getElementById('mainImage-input'),
+            mainImageDropArea: document.getElementById('mainImage-drop-area'), // New
+            fontFamilyInput: document.getElementById('fontFamily-input'),
+            headlineColorInput: document.getElementById('headlineColor-input'),
+            newsBodyColorInput: document.getElementById('newsBodyColor-input'),
+            headlineSizeInput: document.getElementById('headlineSize-input'),
+            newsBodySizeInput: document.getElementById('newsBodySize-input'),
+            headlineShadowColorInput: document.getElementById('headlineShadowColor-input'),
+            headlineShadowBlurInput: document.getElementById('headlineShadowBlur-input'),
+            newsBodyShadowColorInput: document.getElementById('newsBodyShadowColor-input'),
+            newsBodyShadowBlurInput: document.getElementById('newsBodyShadowBlur-input'),
+            logoImageInput: document.getElementById('logoImage-input'),
+            logoSizeInput: document.getElementById('logoSize-input'),
+            logoPaddingInput: document.getElementById('logoPadding-input'),
+            logoBorderRadiusInput: document.getElementById('logoBorderRadius-input'),
+            logoPositionButtons: document.getElementById('logoPosition-buttons'),
+            palettesContainer: document.getElementById('palettes-container'),
+            exportButton: document.getElementById('export-button'),
+            exportButtonContent: document.getElementById('export-button-content'),
+            exportButtonLoading: document.getElementById('export-button-loading'),
 
-</div>
-</div>
-</main>
+            // Range Value Labels
+            headlineSizeValue: document.getElementById('headlineSize-value'),
+            newsBodySizeValue: document.getElementById('newsBodySize-value'),
+            headlineShadowBlurValue: document.getElementById('headlineShadowBlur-value'),
+            newsBodyShadowBlurValue: document.getElementById('newsBodyShadowBlur-value'),
+            logoSizeValue: document.getElementById('logoSize-value'),
+            logoPaddingValue: document.getElementById('logoPadding-value'),
+            logoBorderRadiusValue: document.getElementById('logoBorderRadius-value'),
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-/* STATE */
-const state = {
-    headline: 'هنا يكتب عنوان الخبر الرئيسي',
-    newsBody: 'تفاصيل موجزة عن الخبر لجذب المشاهد. يجب أن تكون قصيرة وواضحة.',
-    mainImageUrl: '',
-    logoImageUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48cGF0aCBkPSJNMTIgMjJWMk0yIDEyaDIwTTUuNSAxOC41QTkgOSAwIDAgMCAxMiAyMiA5IDkgMCAwIDAgMTguNSA1LjUiLz48cGF0aCBkPSJNNTUuNSA1LjVBNyA3IDAgMCAxIDEyIDIgNyA3IDAgMCAxIDE4LjUgMTguNSIvPjwvc3ZnPg==',
-    headlineColor: '#FFFFFF',
-    headlineSize: 40,
-    newsBodyColor: '#E0E0E0',
-    newsBodySize: 20,
-    logoPosition: 'top-right', // Initial position for drag
-    logoSize: 80,
-    logoPadding: 8,
-    logoBorderRadius: 12,
-    fontFamily: 'Cairo',
-    headlineShadowColor: '#000000',
-    headlineShadowBlur: 5,
-    newsBodyShadowColor: '#000000',
-    newsBodyShadowBlur: 3,
-    isExporting: false,
-    exportFormat: "jpg",
-    activePalette: null, // Will be set on init
-};
-
-const palettes = [
-    { name: 'أخبار العالم', css: `repeating-linear-gradient(0deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), radial-gradient(ellipse at center, rgba(14, 29, 61, 1) 0%, rgba(12, 20, 39, 1) 100%)` },
-    { name: 'عاجل وحيوي', css: 'radial-gradient(ellipse at top left, rgba(179, 58, 58, 0.7), transparent 60%), radial-gradient(ellipse at bottom right, rgba(36, 36, 128, 0.6), transparent 70%), #111217' },
-    { name: 'تقني ومستقبلي', css: 'linear-gradient(135deg, #020024 0%, #090979 35%, #00d4ff 100%)' },
-    { name: 'ذهبي فاخر', css: 'radial-gradient(ellipse at bottom, rgba(212, 175, 55, 0.2), transparent 70%), #1a1a1a' },
-    { name: 'أزرق هادئ', css: 'linear-gradient(45deg, #09203f 0%, #537895 100%)' },
-    { name: 'غرافيت داكن', css: 'linear-gradient(160deg, #434343 0%, #1e1e1e 100%)' },
-    { name: 'أحمر ناري', css: 'linear-gradient(135deg, #6d0000 0%, #d32f2f 74%)' },
-    { name: 'موف غامض', css: 'linear-gradient(135deg, #311b92 0%, #7e57c2 100%)' },
-    { name: 'فوشيا عصري', css: 'linear-gradient(45deg, #c51162 0%, #f50057 100%)' },
-    { name: 'سيان حيوي', css: 'linear-gradient(45deg, #004d40 0%, #009688 100%)' }
-];
-state.activePalette = palettes[0]; // Set initial palette
-
-// --- DOM ELEMENTS ---
-const dom = {
-    // Inputs
-    headlineInput: document.getElementById('headline-input'),
-    newsBodyInput: document.getElementById('newsBody-input'),
-    mainImageInput: document.getElementById('mainImage-input'),
-    imageDropzone: document.getElementById('image-dropzone'), // Added
-    fontFamilyInput: document.getElementById('fontFamily-input'),
-    headlineColorInput: document.getElementById('headlineColor-input'),
-    newsBodyColorInput: document.getElementById('newsBodyColor-input'),
-    headlineSizeInput: document.getElementById('headlineSize-input'),
-    newsBodySizeInput: document.getElementById('newsBodySize-input'),
-    headlineShadowColorInput: document.getElementById('headlineShadowColor-input'),
-    headlineShadowBlurInput: document.getElementById('headlineShadowBlur-input'),
-    newsBodyShadowColorInput: document.getElementById('newsBodyShadowColor-input'),
-    newsBodyShadowBlurInput: document.getElementById('newsBodyShadowBlur-input'),
-    logoImageInput: document.getElementById('logoImage-input'),
-    logoDropzone: document.getElementById('logo-dropzone'), // Added
-    logoSizeInput: document.getElementById('logoSize-input'),
-    logoPaddingInput: document.getElementById('logoPadding-input'),
-    logoBorderRadiusInput: document.getElementById('logoBorderRadius-input'),
-    logoPositionButtons: document.getElementById('logoPosition-buttons'),
-    palettesContainer: document.getElementById('palettes-container'),
-    exportFormatInput: document.getElementById('export-format'), // Changed from bgColor-input
-    resetSettingsButton: document.getElementById('reset-settings'), // Added
-    exportButton: document.getElementById('export-button'),
-    exportButtonContent: document.getElementById('export-button-content'),
-    exportButtonLoading: document.getElementById('export-button-loading'),
-
-    // Range Value Labels
-    headlineSizeValue: document.getElementById('headlineSize-value'),
-    newsBodySizeValue: document.getElementById('newsBodySize-value'),
-    headlineShadowBlurValue: document.getElementById('headlineShadowBlur-value'),
-    newsBodyShadowBlurValue: document.getElementById('newsBodyShadowBlur-value'),
-    logoSizeValue: document.getElementById('logoSize-value'),
-    logoPaddingValue: document.getElementById('logoPadding-value'),
-    logoBorderRadiusValue: document.getElementById('logoBorderRadius-value'),
-
-    // Preview
-    imagePreview: document.getElementById('image-preview'),
-    previewHeadline: document.getElementById('preview-headline'),
-    previewNewsBody: document.getElementById('preview-newsBody'),
-    previewMainImage: document.getElementById('preview-mainImage'),
-    previewMainImagePlaceholder: document.getElementById('preview-mainImage-placeholder'),
-    previewLogoContainer: document.getElementById('preview-logo-container'),
-    previewLogo: document.getElementById('preview-logo')
-};
-
-// --- RENDER/UPDATE FUNCTION ---
-function updatePreview() {
-    // Content
-    dom.previewHeadline.textContent = state.headline;
-    dom.previewNewsBody.textContent = state.newsBody;
-
-    // Images
-    if (state.mainImageUrl) {
-        dom.previewMainImage.src = state.mainImageUrl;
-        dom.previewMainImage.classList.remove('hidden');
-        dom.previewMainImagePlaceholder.classList.add('hidden');
-    } else {
-        dom.previewMainImage.src = '';
-        dom.previewMainImage.classList.add('hidden');
-        dom.previewMainImagePlaceholder.classList.remove('hidden');
-    }
-
-    if (state.logoImageUrl) {
-        dom.previewLogo.src = state.logoImageUrl;
-        dom.previewLogoContainer.classList.remove('hidden');
-    } else {
-        dom.previewLogoContainer.classList.add('hidden');
-    }
-    
-    // Text Styles
-    dom.imagePreview.style.fontFamily = state.fontFamily;
-    dom.previewHeadline.style.color = state.headlineColor;
-    dom.previewHeadline.style.fontSize = `${state.headlineSize}px`;
-    dom.previewHeadline.style.textShadow = `0px 2px ${state.headlineShadowBlur}px ${state.headlineShadowColor}`;
-    
-    dom.previewNewsBody.style.color = state.newsBodyColor;
-    dom.previewNewsBody.style.fontSize = `${state.newsBodySize}px`;
-    dom.previewNewsBody.style.textShadow = `0px 1px ${state.newsBodyShadowBlur}px ${state.newsBodyShadowColor}`;
-    
-    // Logo Styles
-    // Clear any previous position classes for drag to work
-    dom.previewLogoContainer.classList.remove('top-4', 'left-4', 'right-4', 'bottom-4');
-    dom.previewLogoContainer.style.width = `${state.logoSize}px`;
-    dom.previewLogoContainer.style.height = `${state.logoSize}px`;
-    dom.previewLogoContainer.style.padding = `${state.logoPadding}px`;
-    dom.previewLogoContainer.style.borderRadius = `${state.logoBorderRadius}px`;
-
-    // Background
-    dom.imagePreview.style.background = state.activePalette.css;
-}
-
-// --- EVENT LISTENERS ---
-function setupEventListeners() {
-    // --- INPUTS ---
-    dom.headlineInput.addEventListener('input', (e) => { state.headline = e.target.value; updatePreview(); });
-    dom.newsBodyInput.addEventListener('input', (e) => { state.newsBody = e.target.value; updatePreview(); });
-    dom.fontFamilyInput.addEventListener('change', (e) => { state.fontFamily = e.target.value; updatePreview(); });
-    dom.headlineColorInput.addEventListener('input', (e) => { state.headlineColor = e.target.value; updatePreview(); });
-    dom.newsBodyColorInput.addEventListener('input', (e) => { state.newsBodyColor = e.target.value; updatePreview(); });
-    dom.headlineShadowColorInput.addEventListener('input', (e) => { state.headlineShadowColor = e.target.value; updatePreview(); });
-    dom.newsBodyShadowColorInput.addEventListener('input', (e) => { state.newsBodyShadowColor = e.target.value; updatePreview(); });
-    dom.exportFormatInput.addEventListener('change', (e) => { state.exportFormat = e.target.value; }); // Added
-
-    // --- RANGES ---
-    const rangeInputs = [
-        { input: dom.headlineSizeInput, stateKey: 'headlineSize', label: dom.headlineSizeValue },
-        { input: dom.newsBodySizeInput, stateKey: 'newsBodySize', label: dom.newsBodySizeValue },
-        { input: dom.headlineShadowBlurInput, stateKey: 'headlineShadowBlur', label: dom.headlineShadowBlurValue },
-        { input: dom.newsBodyShadowBlurInput, stateKey: 'newsBodyShadowBlur', label: dom.newsBodyShadowBlurValue },
-        { input: dom.logoSizeInput, stateKey: 'logoSize', label: dom.logoSizeValue },
-        { input: dom.logoPaddingInput, stateKey: 'logoPadding', label: dom.logoPaddingValue },
-        { input: dom.logoBorderRadiusInput, stateKey: 'logoBorderRadius', label: dom.logoBorderRadiusValue },
-    ];
-    rangeInputs.forEach(({input, stateKey, label}) => {
-        input.addEventListener('input', (e) => {
-            const value = Number(e.target.value);
-            state[stateKey] = value;
-            if (label) label.textContent = value;
-            updatePreview();
-        });
-    });
-
-    // --- FILES ---
-    dom.mainImageInput.addEventListener('change', (e) => handleFile(e.target, (url) => { state.mainImageUrl = url; updatePreview(); }));
-    dom.logoImageInput.addEventListener('change', (e) => handleFile(e.target, (url) => { state.logoImageUrl = url; updatePreview(); }));
-
-    // --- DRAG & DROP ---
-    enableDropzone(dom.imageDropzone, 'mainImageUrl');
-    enableDropzone(dom.logoDropzone, 'logoImageUrl');
-
-    function enableDropzone(dropzone, targetKey) {
-        dropzone.addEventListener("dragover", e => {
-            e.preventDefault();
-            dropzone.classList.add("drop-active");
-        });
-
-        dropzone.addEventListener("dragleave", () => {
-            dropzone.classList.remove("drop-active");
-        });
-
-        dropzone.addEventListener("drop", e => {
-            e.preventDefault();
-            dropzone.classList.remove("drop-active");
-            const file = e.dataTransfer.files[0];
-            if (!file || !file.type.startsWith("image/")) return;
-
-            const reader = new FileReader();
-            reader.onload = ev => {
-                state[targetKey] = ev.target.result;
-                updatePreview();
-            };
-            reader.readAsDataURL(file);
-        });
-
-        // Click to open file dialog
-        dropzone.addEventListener("click", () => {
-            if (targetKey === 'mainImageUrl') dom.mainImageInput.click();
-            if (targetKey === 'logoImageUrl') dom.logoImageInput.click();
-        });
-    }
-
-    // --- LOGO POSITION BUTTONS ---
-    dom.logoPositionButtons.addEventListener('click', (e) => {
-        const button = e.target.closest('button');
-        if (button && button.dataset.position) {
-            state.logoPosition = button.dataset.position;
-            // Clear any inline styles from drag
-            dom.previewLogoContainer.style.left = '';
-            dom.previewLogoContainer.style.top = '';
-
-            // Update button styles
-            dom.logoPositionButtons.querySelectorAll('button').forEach(btn => {
-                btn.classList.remove('bg-blue-600');
-                btn.classList.add('bg-gray-700');
-            });
-            button.classList.add('bg-blue-600');
-            button.classList.remove('bg-gray-700');
-            updatePreview();
-        }
-    });
-
-    // --- PALETTES ---
-    dom.palettesContainer.addEventListener('click', (e) => {
-        const button = e.target.closest('button');
-        if (button && button.dataset.name) {
-            const foundPalette = palettes.find(p => p.name === button.dataset.name);
-            if (foundPalette) {
-                state.activePalette = foundPalette;
-                dom.palettesContainer.querySelectorAll('button').forEach(btn => {
-                    btn.classList.remove('bg-blue-600/50', 'ring-2', 'ring-blue-400');
-                    btn.classList.add('bg-gray-700', 'hover:bg-gray-600/50');
-                });
-                button.classList.add('bg-blue-600/50', 'ring-2', 'ring-blue-400');
-                button.classList.remove('bg-gray-700', 'hover:bg-gray-600/50');
-                updatePreview();
-            }
-        }
-    });
-
-    // --- DRAG TO MOVE LOGO ---
-    let drag = false, offsetX = 0, offsetY = 0;
-
-    dom.previewLogoContainer.addEventListener("mousedown", e => {
-        if (e.target.tagName === 'IMG') return; // Don't drag if clicking directly on the image inside
-        drag = true;
-        // Calculate offset relative to the logo container's current position
-        const rect = dom.previewLogoContainer.getBoundingClientRect();
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
-        dom.previewLogoContainer.classList.add('cursor-grabbing');
-    });
-
-    document.addEventListener("mouseup", () => {
-        drag = false;
-        dom.previewLogoContainer.classList.remove('cursor-grabbing');
-    });
-
-    document.addEventListener("mousemove", e => {
-        if (!drag) return;
-        e.preventDefault(); // Prevent text selection etc. during drag
-
-        const parentRect = dom.imagePreview.getBoundingClientRect(); // Parent container for bounds
-        let newLeft = e.clientX - parentRect.left - offsetX;
-        let newTop = e.clientY - parentRect.top - offsetY;
-
-        // Keep logo within parent bounds
-        newLeft = Math.max(0, Math.min(newLeft, parentRect.width - dom.previewLogoContainer.offsetWidth));
-        newTop = Math.max(0, Math.min(newTop, parentRect.height - dom.previewLogoContainer.offsetHeight));
+            // Preview
+            imagePreview: document.getElementById('image-preview'),
+            previewHeadline: document.getElementById('preview-headline'),
+            previewNewsBody: document.getElementById('preview-newsBody'),
+            previewMainImage: document.getElementById('preview-mainImage'),
+            previewMainImagePlaceholder: document.getElementById('preview-mainImage-placeholder'),
+            previewLogoContainer: document.getElementById('preview-logo-container'),
+            previewLogo: document.getElementById('preview-logo')
+        };
         
-        dom.previewLogoContainer.style.left = newLeft + "px";
-        dom.previewLogoContainer.style.top = newTop + "px";
-        
-        // Remove position classes if manually dragged
-        dom.previewLogoContainer.classList.remove('top-4', 'left-4', 'right-4', 'bottom-4');
-    });
+        // --- RENDER/UPDATE FUNCTION ---
+        function updatePreview() {
+            // Content
+            dom.previewHeadline.textContent = state.headline;
+            dom.previewNewsBody.textContent = state.newsBody;
 
-    // --- EXPORT & RESET ---
-    dom.exportButton.addEventListener('click', openImageForSaving); // Changed function name
-    dom.resetSettingsButton.addEventListener('click', () => { location.reload(); }); // Simple reload for reset
-}
-
-// --- HELPERS ---
-function handleFile(input, callback) {
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => callback(e.target.result);
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-async function openImageForSaving() {
-    if (state.isExporting) return;
-    state.isExporting = true;
-    dom.exportButton.disabled = true;
-    dom.exportButtonContent.classList.add('hidden');
-    dom.exportButtonLoading.classList.remove('hidden');
-    dom.exportButton.querySelector('span:last-child').textContent = 'جاري التجهيز...';
-
-    try {
-        const canvas = await html2canvas(dom.imagePreview, { 
-            useCORS: true, 
-            allowTaint: true,
-            scale: 2, // Increase resolution for better quality
-            logging: true, // Enable logging for debugging
-            backgroundColor: null // Allow transparent background if PNG is selected
-        });
-        
-        let imageDataUrl;
-        let mimeType;
-        let filename = `short-image-${Date.now()}`;
-
-        if (state.exportFormat === 'jpg') {
-            imageDataUrl = canvas.toDataURL('image/jpeg', 0.95);
-            mimeType = 'image/jpeg';
-            filename += '.jpg';
-        } else { // PNG
-            imageDataUrl = canvas.toDataURL('image/png');
-            mimeType = 'image/png';
-            filename += '.png';
-        }
-        
-        // Attempt to open in new tab with Blob for better handling
-        try {
-            const response = await fetch(imageDataUrl);
-            const blob = await response.blob();
-            const blobUrl = URL.createObjectURL(blob);
-
-            const newTab = window.open(blobUrl, '_blank');
-            if (newTab) {
-                newTab.document.title = "صورة الخبر - يمكنك حفظها";
-                newTab.focus();
-                alert("تم فتح الصورة في علامة تبويب جديدة. لحفظها، انقر بزر الماوس الأيمن على الصورة واختر 'حفظ الصورة باسم...' أو اسحبها إلى سطح المكتب.");
+            // Images
+            if (state.mainImageUrl) {
+                dom.previewMainImage.src = state.mainImageUrl;
+                dom.previewMainImage.classList.remove('hidden');
+                dom.previewMainImagePlaceholder.classList.add('hidden');
             } else {
-                throw new Error("Popup blocked or new tab failed to open.");
+                dom.previewMainImage.src = '';
+                dom.previewMainImage.classList.add('hidden');
+                dom.previewMainImagePlaceholder.classList.remove('hidden');
             }
-        } catch (blobError) {
-            console.warn("Failed to open image as Blob URL, attempting direct download.", blobError);
-            // Fallback to direct download if Blob fails (e.g., popup blockers, specific browser quirks)
-            const link = document.createElement('a');
-            link.download = filename;
-            link.href = imageDataUrl;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            alert("فشل فتح الصورة في علامة تبويب جديدة (ربما بسبب حظر النوافذ المنبثقة). لقد بدأت عملية التنزيل تلقائيًا. ابحث عن الملف في مجلد التنزيلات.");
+
+            if (state.logoImageUrl) {
+                dom.previewLogo.src = state.logoImageUrl;
+                dom.previewLogoContainer.classList.remove('hidden');
+            } else {
+                dom.previewLogoContainer.classList.add('hidden');
+            }
+            
+            // Text Styles
+            dom.imagePreview.style.fontFamily = state.fontFamily;
+            dom.previewHeadline.style.color = state.headlineColor;
+            dom.previewHeadline.style.fontSize = `${state.headlineSize}px`;
+            dom.previewHeadline.style.textShadow = `0px 2px ${state.headlineShadowBlur}px ${state.headlineShadowColor}`;
+            
+            dom.previewNewsBody.style.color = state.newsBodyColor;
+            dom.previewNewsBody.style.fontSize = `${state.newsBodySize}px`;
+            dom.previewNewsBody.style.textShadow = `0px 1px ${state.newsBodyShadowBlur}px ${state.newsBodyShadowColor}`;
+            
+            // Logo Styles
+            const logoPosClasses = {
+                'top-left': ['top-4', 'left-4'], 'top-right': ['top-4', 'right-4'],
+                'bottom-left': ['bottom-4', 'left-4'], 'bottom-right': ['bottom-4', 'right-4']
+            };
+            dom.previewLogoContainer.className = 'absolute flex items-center justify-center bg-black/30 backdrop-blur-sm shadow-xl border-2 border-white/20 transition-all duration-300 ' + logoPosClasses[state.logoPosition].join(' ');
+            dom.previewLogoContainer.style.width = `${state.logoSize}px`;
+            dom.previewLogoContainer.style.height = `${state.logoSize}px`;
+            dom.previewLogoContainer.style.padding = `${state.logoPadding}px`;
+            dom.previewLogoContainer.style.borderRadius = `${state.logoBorderRadius}px`;
+
+            // Background
+            dom.imagePreview.style.background = state.activePalette.css;
         }
 
+        // --- EVENT LISTENERS ---
+        function setupEventListeners() {
+            // --- INPUTS ---
+            dom.headlineInput.addEventListener('input', (e) => { state.headline = e.target.value; updatePreview(); });
+            dom.newsBodyInput.addEventListener('input', (e) => { state.newsBody = e.target.value; updatePreview(); });
+            dom.fontFamilyInput.addEventListener('change', (e) => { state.fontFamily = e.target.value; updatePreview(); });
+            dom.headlineColorInput.addEventListener('input', (e) => { state.headlineColor = e.target.value; updatePreview(); });
+            dom.newsBodyColorInput.addEventListener('input', (e) => { state.newsBodyColor = e.target.value; updatePreview(); });
+            dom.headlineShadowColorInput.addEventListener('input', (e) => { state.headlineShadowColor = e.target.value; updatePreview(); });
+            dom.newsBodyShadowColorInput.addEventListener('input', (e) => { state.newsBodyShadowColor = e.target.value; updatePreview(); });
 
-    } catch (error) {
-        console.error("Error generating or opening image:", error);
-        alert(`حدث خطأ أثناء تجهيز الصورة للعرض/الحفظ: ${error.message}. يرجى التحقق من وحدة التحكم (Console) للمزيد من التفاصيل.`);
-    } finally {
-        state.isExporting = false;
-        dom.exportButton.disabled = false;
-        dom.exportButtonContent.classList.remove('hidden');
-        dom.exportButtonLoading.classList.add('hidden');
-        dom.exportButton.querySelector('span:first-child').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg><span>عرض الصورة لحفظها</span>`;
-    }
-}
+            // --- RANGES ---
+            const rangeInputs = [
+                { input: dom.headlineSizeInput, stateKey: 'headlineSize', label: dom.headlineSizeValue },
+                { input: dom.newsBodySizeInput, stateKey: 'newsBodySize', label: dom.newsBodySizeValue },
+                { input: dom.headlineShadowBlurInput, stateKey: 'headlineShadowBlur', label: dom.headlineShadowBlurValue },
+                { input: dom.newsBodyShadowBlurInput, stateKey: 'newsBodyShadowBlur', label: dom.newsBodyShadowBlurValue },
+                { input: dom.logoSizeInput, stateKey: 'logoSize', label: dom.logoSizeValue },
+                { input: dom.logoPaddingInput, stateKey: 'logoPadding', label: dom.logoPaddingValue },
+                { input: dom.logoBorderRadiusInput, stateKey: 'logoBorderRadius', label: dom.logoBorderRadiusValue },
+            ];
+            rangeInputs.forEach(({input, stateKey, label}) => {
+                input.addEventListener('input', (e) => {
+                    const value = Number(e.target.value);
+                    state[stateKey] = value;
+                    if (label) label.textContent = value;
+                    updatePreview();
+                });
+            });
+
+            // --- FILES (CLICK & DRAG/DROP) ---
+            dom.mainImageInput.addEventListener('change', (e) => handleFile(e.target.files[0], (url) => { state.mainImageUrl = url; updatePreview(); }));
+            dom.logoImageInput.addEventListener('change', (e) => handleFile(e.target.files[0], (url) => { state.logoImageUrl = url; updatePreview(); }));
+
+            // Drag and Drop for main image
+            dom.mainImageDropArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dom.mainImageDropArea.classList.add('bg-blue-700', 'border-blue-200');
+            });
+            dom.mainImageDropArea.addEventListener('dragleave', (e) => {
+                dom.mainImageDropArea.classList.remove('bg-blue-700', 'border-blue-200');
+            });
+            dom.mainImageDropArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dom.mainImageDropArea.classList.remove('bg-blue-700', 'border-blue-200');
+                const files = e.dataTransfer.files;
+                if (files.length > 0 && files[0].type.startsWith('image/')) {
+                    handleFile(files[0], (url) => { state.mainImageUrl = url; updatePreview(); });
+                } else {
+                    alert("الرجاء إسقاط ملف صورة صالح.");
+                }
+            });
 
 
-function renderPalettes() {
-    const html = palettes.map(palette => `
-        <button 
-          data-name="${palette.name}"
-          class="flex items-center gap-3 w-full p-2 rounded-lg transition ${palette.name === state.activePalette.name ? 'bg-blue-600/50 ring-2 ring-blue-400' : 'bg-gray-700 hover:bg-gray-600/50'}">
-          <div class="w-8 h-8 rounded-md border border-white/20 shrink-0" style="background: ${palette.css}"></div>
-          <span class="text-sm font-medium">${palette.name}</span>
-        </button>
-    `).join('');
-    dom.palettesContainer.innerHTML = html;
-}
+            // --- BUTTONS ---
+            dom.logoPositionButtons.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (button && button.dataset.position) {
+                    state.logoPosition = button.dataset.position;
+                    // Update button styles
+                    dom.logoPositionButtons.querySelectorAll('button').forEach(btn => {
+                        btn.classList.remove('bg-blue-600');
+                        btn.classList.add('bg-gray-700');
+                    });
+                    button.classList.add('bg-blue-600');
+                    button.classList.remove('bg-gray-700');
+                    updatePreview();
+                }
+            });
 
-function initializeInputs() {
-    dom.headlineInput.value = state.headline;
-    dom.newsBodyInput.value = state.newsBody;
-    dom.fontFamilyInput.value = state.fontFamily;
-    dom.headlineColorInput.value = state.headlineColor;
-    dom.newsBodyColorInput.value = state.newsBodyColor;
-    dom.headlineSizeInput.value = state.headlineSize;
-    dom.headlineSizeValue.textContent = state.headlineSize;
-    dom.newsBodySizeInput.value = state.newsBodySize;
-    dom.newsBodySizeValue.textContent = state.newsBodySize;
-    dom.headlineShadowColorInput.value = state.headlineShadowColor;
-    dom.headlineShadowBlurInput.value = state.headlineShadowBlur;
-    dom.headlineShadowBlurValue.textContent = state.headlineShadowBlur;
-    dom.newsBodyShadowColorInput.value = state.newsBodyShadowColor;
-    dom.newsBodyShadowBlurInput.value = state.newsBodyShadowBlur;
-    dom.newsBodyShadowBlurValue.textContent = state.newsBodyShadowBlur;
-    dom.logoSizeInput.value = state.logoSize;
-    dom.logoSizeValue.textContent = state.logoSize;
-    dom.logoPaddingInput.value = state.logoPadding;
-    dom.logoPaddingValue.textContent = state.logoPadding;
-    dom.logoBorderRadiusInput.value = state.logoBorderRadius;
-    dom.logoBorderRadiusValue.textContent = state.logoBorderRadius;
-    dom.exportFormatInput.value = state.exportFormat;
+            dom.palettesContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (button && button.dataset.name) {
+                    const foundPalette = palettes.find(p => p.name === button.dataset.name);
+                    if (foundPalette) {
+                        state.activePalette = foundPalette;
+                        dom.palettesContainer.querySelectorAll('button').forEach(btn => {
+                            btn.classList.remove('bg-blue-600/50', 'ring-2', 'ring-blue-400');
+                            btn.classList.add('bg-gray-700', 'hover:bg-gray-600/50');
+                        });
+                        button.classList.add('bg-blue-600/50', 'ring-2', 'ring-blue-400');
+                        button.classList.remove('bg-gray-700', 'hover:bg-gray-600/50');
+                        updatePreview();
+                    }
+                }
+            });
 
-    // Set initial active logo position button style
-    dom.logoPositionButtons.querySelectorAll('button').forEach(btn => {
-        if (btn.dataset.position === state.logoPosition) {
-            btn.classList.add('bg-blue-600');
-            btn.classList.remove('bg-gray-700');
-        } else {
-            btn.classList.add('bg-gray-700');
-            btn.classList.remove('bg-blue-600');
+            dom.exportButton.addEventListener('click', exportImage);
         }
+
+        // --- HELPERS ---
+        function handleFile(file, callback) {
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => callback(e.target.result);
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function exportImage() {
+            if (state.isExporting) return;
+            state.isExporting = true;
+            dom.exportButton.disabled = true;
+            dom.exportButtonContent.classList.add('hidden');
+            dom.exportButtonLoading.classList.remove('hidden');
+
+            try {
+                const canvas = await html2canvas(dom.imagePreview, { 
+                    useCORS: true, 
+                    allowTaint: true,
+                    scale: 2 // Increase resolution for better quality
+                });
+                const link = document.createElement('a');
+                link.download = `short-image-${Date.now()}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+            } catch (error) {
+                console.error("Error exporting image:", error);
+                alert("حدث خطأ أثناء تصدير الصورة. يرجى المحاولة مرة أخرى.");
+            } finally {
+                state.isExporting = false;
+                dom.exportButton.disabled = false;
+                dom.exportButtonContent.classList.remove('hidden');
+                dom.exportButtonLoading.classList.add('hidden');
+            }
+        }
+
+        function renderPalettes() {
+            const html = palettes.map(palette => `
+                <button 
+                  data-name="${palette.name}"
+                  class="flex items-center gap-3 w-full p-2 rounded-lg transition ${palette.name === state.activePalette.name ? 'bg-blue-600/50 ring-2 ring-blue-400' : 'bg-gray-700 hover:bg-gray-600/50'}">
+                  <div class="w-8 h-8 rounded-md border border-white/20 shrink-0" style="background: ${palette.css}"></div>
+                  <span class="text-sm font-medium">${palette.name}</span>
+                </button>
+            `).join('');
+            dom.palettesContainer.innerHTML = html;
+        }
+
+        function initializeInputs() {
+            dom.headlineInput.value = state.headline;
+            dom.newsBodyInput.value = state.newsBody;
+            dom.fontFamilyInput.value = state.fontFamily;
+            dom.headlineColorInput.value = state.headlineColor;
+            dom.newsBodyColorInput.value = state.newsBodyColor;
+            dom.headlineSizeInput.value = state.headlineSize;
+            dom.newsBodySizeInput.value = state.newsBodySize;
+            dom.headlineShadowColorInput.value = state.headlineShadowColor;
+            dom.headlineShadowBlurInput.value = state.headlineShadowBlur;
+            dom.newsBodyShadowColorInput.value = state.newsBodyShadowColor;
+            dom.newsBodyShadowBlurInput.value = state.newsBodyShadowBlur;
+            dom.logoSizeInput.value = state.logoSize;
+            dom.logoPaddingInput.value = state.logoPadding;
+            dom.logoBorderRadiusInput.value = state.logoBorderRadius;
+        }
+
+        // --- INITIALIZATION ---
+        initializeInputs();
+        renderPalettes();
+        setupEventListeners();
+        updatePreview();
     });
-}
-
-// --- INITIALIZATION ---
-initializeInputs();
-renderPalettes();
-setupEventListeners();
-updatePreview();
-
-});
-</script>
-
+  </script>
 </body>
 </html>
- 
