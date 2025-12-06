@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXGOKSqwfl/oMEAEXpfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- تحديث: تم إزالة سمة 'integrity' للسماح بتحميل html2canvas بشكل صحيح -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body {
       font-family: 'Cairo', sans-serif;
@@ -482,6 +483,10 @@
             dom.exportButtonLoading.classList.remove('hidden');
 
             try {
+                // تأكد أن html2canvas متاح عالميًا
+                if (typeof html2canvas === 'undefined') {
+                    throw new Error("html2canvas library is not loaded.");
+                }
                 const canvas = await html2canvas(dom.imagePreview, { 
                     useCORS: true, 
                     allowTaint: true,
