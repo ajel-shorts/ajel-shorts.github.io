@@ -102,7 +102,6 @@
     /* Accordion */
     details > summary { list-style: none; }
     details > summary::-webkit-details-marker { display: none; }
-    details[open] > summary svg { transform: rotate(180deg); }
 
     .accordion-item {
       background-color: transparent;
@@ -122,7 +121,6 @@
       justify-content: space-between;
       align-items: center;
     }
-    .accordion-summary svg { transition: transform 0.2s; color: var(--text-secondary); }
 
     .accordion-content {
       padding: 1rem;
@@ -294,7 +292,6 @@
             <details class="accordion-item" open>
               <summary class="accordion-summary">
                 <span>المحتوى</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
               </summary>
               <div class="accordion-content space-y-4">
                 <div>
@@ -324,7 +321,6 @@
              <details class="accordion-item">
               <summary class="accordion-summary">
                 <span>تصميم النصوص</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
               </summary>
               <div class="accordion-content space-y-4">
                 <div class="control-grid">
@@ -360,7 +356,6 @@
             <details class="accordion-item">
               <summary class="accordion-summary">
                 <span>تصميم الشعار</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
               </summary>
               <div class="accordion-content space-y-4">
                 <div>
@@ -395,7 +390,6 @@
              <details class="accordion-item">
               <summary class="accordion-summary">
                 <span>تصميم الخلفية</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
               </summary>
               <div id="palettes-container" class="accordion-content space-y-2">
                 <!-- Palettes will be dynamically inserted here -->
