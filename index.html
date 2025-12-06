@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-  <!-- تحديث: تم إزالة سمة 'integrity' للسماح بتحميل html2canvas بشكل صحيح -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body {
@@ -24,6 +23,22 @@
     details[open] > summary svg {
       transform: rotate(180deg);
     }
+    /* التعديل الجديد هنا لمنع نزول العنوان */
+    #preview-headline {
+        max-height: 50px; /* **قم بتعديل هذه القيمة بناءً على الارتفاع الفعلي للمنطقة المظللة** */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* يسمح بسطرين. يمكنك تغييرها لسطر واحد إذا أردت */
+        -webkit-box-orient: vertical;
+        word-break: break-word;
+        line-height: 1.2; /* ضبط تباعد الأسطر لتحكم أفضل */
+    }
+    /* لضمان أن العنوان لا يتأثر بالpadding الخاص بالعنصر الأب */
+    #image-preview > div:first-child {
+        padding: 8px 12px; /* يمكنك تعديل هذا البادينغ ليتناسب مع تصميمك */
+    }
+
   </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -184,6 +199,7 @@
             class="w-full max-w-[405px] aspect-[9/16] overflow-hidden shadow-2xl flex flex-col justify-start p-6 sm:p-8 gap-3 transition-all duration-500">
             
             <div class="bg-black/50 backdrop-blur-sm p-3 rounded-lg shadow-lg">
+              <!-- #preview-headline تم تطبيق التعديلات عليها في الـ <style> tag -->
               <h2 id="preview-headline" class="font-black text-center w-full"></h2>
             </div>
             
@@ -534,6 +550,25 @@
             dom.logoSizeInput.value = state.logoSize;
             dom.logoPaddingInput.value = state.logoPadding;
             dom.logoBorderRadiusInput.value = state.logoBorderRadius;
+            // تحديث قيمة الملصقات الأولية لـ range inputs
+            dom.headlineSizeValue.textContent = state.headlineSize;
+            dom.newsBodySizeValue.textContent = state.newsBodySize;
+            dom.headlineShadowBlurValue.textContent = state.headlineShadowBlur;
+            dom.newsBodyShadowBlurValue.textContent = state.newsBodyShadowBlur;
+            dom.logoSizeValue.textContent = state.logoSize;
+            dom.logoPaddingValue.textContent = state.logoPadding;
+            dom.logoBorderRadiusValue.textContent = state.logoBorderRadius;
+
+            // تحديد زر موضع الشعار النشط
+            dom.logoPositionButtons.querySelectorAll('button').forEach(btn => {
+                if (btn.dataset.position === state.logoPosition) {
+                    btn.classList.add('bg-blue-600');
+                    btn.classList.remove('bg-gray-700');
+                } else {
+                    btn.classList.add('bg-gray-700');
+                    btn.classList.remove('bg-blue-600');
+                }
+            });
         }
 
         // --- INITIALIZATION ---
@@ -545,5 +580,3 @@
   </script>
 </body>
 </html>
-```
-115.8s
