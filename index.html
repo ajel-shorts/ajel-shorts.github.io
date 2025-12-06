@@ -268,27 +268,36 @@
             activePalette: null
         };
 
-        const palettes = [
-            { name: 'أخبار العالم', css: `repeating-linear-gradient(0deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, rgba(125, 175, 255, 0.05), rgba(125, 175, 255, 0.05) 1px, transparent 1px, transparent 40px), radial-gradient(ellipse at center, rgba(14, 29, 61, 1) 0%, rgba(12, 20, 39, 1) 100%)` },
-            { name: 'عاجل وحيوي', css: 'radial-gradient(ellipse at top left, rgba(179, 58, 58, 0.7), transparent 60%), radial-gradient(ellipse at bottom right, rgba(36, 36, 128, 0.6), transparent 70%), #111217' },
-            { name: 'تقني ومستقبلي', css: 'linear-gradient(135deg, #020024 0%, #090979 35%, #00d4ff 100%)' },
-            { name: 'ذهبي فاخر', css: 'radial-gradient(ellipse at bottom, rgba(212, 175, 55, 0.2), transparent 70%), #1a1a1a' },
-            { name: 'أزرق هادئ', css: 'linear-gradient(45deg, #09203f 0%, #537895 100%)' },
-            { name: 'غرافيت داكن', css: 'linear-gradient(160deg, #434343 0%, #1e1e1e 100%)' },
-            { name: 'أحمر ناري', css: 'linear-gradient(135deg, #6d0000 0%, #d32f2f 74%)' },
-            { name: 'موف غامض', css: 'linear-gradient(135deg, #311b92 0%, #7e57c2 100%)' },
-            { name: 'فوشيا عصري', css: 'linear-gradient(45deg, #c51162 0%, #f50057 100%)' },
-            { name: 'سيان حيوي', css: 'linear-gradient(45deg, #004d40 0%, #009688 100%)' }
-           { name: 'توهج أزرق', css: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)' },
-            { name: 'غروب هادئ', css: 'linear-gradient(45deg, #2c3e50 0%, #fd7e14 100%)' },
-            { name: 'غابة خضراء', css: 'linear-gradient(90deg, #16a085 0%, #2ecc71 100%)' },
-            { name: 'ليالي المدينة', css: 'linear-gradient(180deg, #1c1c2c 0%, #4a4a6f 100%)' },
-            { name: 'كون مجرة', css: 'radial-gradient(ellipse at top, #2d005f 0%, #000000 100%)' },
-            { name: 'أفق وردي', css: 'linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1)' },
-            { name: 'كوكب صحراوي', css: 'linear-gradient(to right top, #a86b3a, #bf7c47, #d78d55, #f09f63, #ffb272)' },
-            { name: 'بحر عميق', css: 'linear-gradient(to right top, #004d40, #006064, #00796b, #00897b, #00a08d)' },
-            { name: 'طاقة حمراء', css: 'linear-gradient(to right top, #ff0000, #ff4000, #ff6f00, #ff9b00, #ffc700)' }
-        ];
+       const palettes = [
+    // لوحات مستوحاة من الطبيعة والظواهر الكونية
+    { name: 'فجر المحيط الهادئ', css: 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)' },
+    { name: 'أضواء الشفق القطبي', css: 'linear-gradient(to right top, #0f0c29, #3a416a, #76788b, #b7b7a4, #fdf8f4)' },
+    { name: 'عمق الغابة المطيرة', css: 'linear-gradient(to right top, #003300, #005000, #006b00, #008900, #00a800)' },
+    { name: 'غبار النجوم الكوني', css: 'radial-gradient(ellipse at center, #1b0636 0%, #000000 100%)' },
+    { name: 'صحراء المغرب', css: 'linear-gradient(to right top, #6b2e0f, #944618, #be6323, #eb8230, #ff9f3f)' },
+
+    // لوحات عصرية وتصميمية
+    { name: 'نيون مدينة المستقبل', css: 'linear-gradient(45deg, #FF00FF 0%, #00FFFF 100%)' },
+    { name: 'أناقة المونوكروم', css: 'linear-gradient(to right, #333333, #888888)' },
+    { name: 'طيف البكسل', css: 'linear-gradient(135deg, #4A00E0 0%, #8E2DE2 100%)' },
+    { name: 'فخامة الرخام الأسود', css: 'radial-gradient(ellipse at top left, rgba(0,0,0,0.8) 0%, rgba(50,50,50,0.9) 100%)' },
+    { name: 'هندسة الجليد', css: 'linear-gradient(to right top, #74ebd5, #9face6)' },
+
+    // لوحات درامية ومزاجية
+    { name: 'ظل الغموض', css: 'linear-gradient(180deg, #1A1A2E 0%, #0F0F1A 100%)' },
+    { name: 'نار التنين', css: 'linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%)' },
+    { name: 'هدوء منتصف الليل', css: 'linear-gradient(to right, #2c3e50, #000000)' },
+    { name: 'عاصفة الصحراء', css: 'linear-gradient(to right top, #a86b3a, #bf7c47, #d78d55, #f09f63, #ffb272)' }, // تم الاحتفاظ بها وتغيير اسمها
+    { name: 'كهف الكريستال', css: 'linear-gradient(135deg, #1b0042 0%, #52006A 100%)' },
+
+    // لوحات مشرقة وحيوية
+    { name: 'انفجار الألوان', css: 'radial-gradient(circle at top right, #ffbe0b, #fb5607, #ff006e, #8338ec, #3a86ff)' },
+    { name: 'صيف استوائي', css: 'linear-gradient(to right top, #00b09b, #96c93d)' },
+    { name: 'حقل الخزامى', css: 'linear-gradient(135deg, #A74AC7 0%, #F5B0F5 100%)' },
+
+    // اللوحة التي طلبت الاحتفاظ بها
+    { name: 'سيان حيوي (أزرق مخضر)', css: 'linear-gradient(45deg, #004d40 0%, #009688 100%)' }
+];
         state.activePalette = palettes[0];
 
         // --- DOM ELEMENTS ---
