@@ -5,6 +5,7 @@
   <title>صانع صور الشورتس الإخبارية</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <!-- تم إزالة سطر تحميل Tailwind CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
@@ -104,7 +105,7 @@
       border: 1px solid var(--border-color);
     }
     @media (min-width: 1024px) { /* lg:w-1/3 */
-      .controls-panel { flex: 0 0 33.333333%; max-width: 33.333333%; } /* Fixed width for better layout */
+      .controls-panel { width: 33.333333%; }
     }
 
     .panel-title {
@@ -133,10 +134,6 @@
       background-color: var(--bg-accordion);
       border-radius: 0.5rem; /* rounded-lg */
       overflow: hidden;
-      margin-bottom: 0.75rem; /* Add margin between accordion items */
-    }
-    .accordion-item:last-child {
-        margin-bottom: 0;
     }
 
     .accordion-summary {
@@ -158,9 +155,6 @@
 
     .form-group {
       margin-bottom: 1rem; /* Equivalent to space-y-4 for individual groups */
-    }
-    .accordion-content .form-group:last-child {
-      margin-bottom: 0; /* Remove margin from last form group in accordion content */
     }
 
     .form-label {
@@ -266,12 +260,10 @@
     .text-shadow-section {
       border-top: 1px solid var(--border-color);
       padding-top: 1rem; /* pt-4 */
-      margin-top: 1rem; /* Add margin for separation */
     }
     .text-shadow-section h4 {
       font-size: 1rem; /* text-md */
       font-weight: 600; /* font-semibold */
-      margin-bottom: 0.5rem; /* Add margin below title */
     }
     .text-shadow-control {
       display: flex;
@@ -296,7 +288,7 @@
       justify-content: center;
     }
     @media (min-width: 1024px) { /* lg:w-2/3 */
-      .preview-panel-wrapper { flex: 0 0 66.666667%; max-width: 66.666667%; } /* Fixed width for better layout */
+      .preview-panel-wrapper { width: 66.666667%; }
     }
 
     .image-preview {
@@ -311,7 +303,6 @@
       padding: 1.5rem; /* p-6 */
       gap: 0.75rem; /* gap-3 */
       transition: all 0.5s ease-in-out;
-      background-color: #000; /* Fallback for palettes */
     }
     @media (min-width: 640px) { /* sm:p-8 */
       .image-preview { padding: 2rem; }
@@ -326,7 +317,6 @@
       padding: 0.75rem 1rem; /* px-3 py-6 */
       border-radius: 0.5rem; /* rounded-lg */
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
-      width: 100%; /* Ensure it takes full width */
     }
 
     .preview-headline {
@@ -454,9 +444,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      text-decoration: none; /* remove underline for button */
-      cursor: pointer;
-      border: none;
     }
     .export-btn:hover {
       transform: scale(1.05);
@@ -501,9 +488,7 @@
       width: 100%;
       padding: 0.5rem; /* p-2 */
       border-radius: 0.5rem; /* rounded-lg */
-      transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-      border: none; /* Ensure no default button border */
-      cursor: pointer;
+      transition: background-color 0.15s ease-in-out;
     }
     .palette-btn-default {
         background-color: var(--bg-panel); /* bg-gray-700 */
@@ -526,41 +511,11 @@
     .palette-name {
       font-size: 0.875rem; /* text-sm */
       font-weight: 500; /* font-medium */
-      color: var(--text-light); /* Ensure text color */
-    }
-
-    /* Specific button styles for logo position */
-    .btn {
-        padding: 0.5rem 1rem; /* py-2 px-4 */
-        border-radius: 0.375rem; /* rounded-md */
-        font-size: 0.75rem; /* text-xs */
-        font-weight: 700;
-        transition: background-color 0.15s ease-in-out;
-        border: none;
-        cursor: pointer;
-    }
-    .btn-primary {
-        background-color: var(--blue-main); /* bg-blue-600 */
-        color: white;
-    }
-    .btn-primary:hover {
-        background-color: var(--blue-hover); /* hover:bg-blue-700 */
-    }
-    .btn-secondary {
-        background-color: var(--bg-panel); /* bg-gray-700 */
-        color: var(--text-light);
-    }
-    .btn-secondary:hover {
-        background-color: var(--border-color); /* hover:bg-gray-600 */
-    }
-    .btn-sm {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.7rem;
     }
   </style>
 </head>
 <body>
-  <main>
+  <main class="min-h-screen">
     <div class="container">
       <header>
         <h1 class="main-title">
@@ -783,7 +738,7 @@
             headline: 'هنا يكتب عنوان الخبر الرئيسي',
             newsBody: 'تفاصيل موجزة عن الخبر لجذب المشاهد. يجب أن تكون قصيرة وواضحة.',
             mainImageUrl: 'https://picsum.photos/720/720',
-            logoImageUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48cGF0aCBkPSJNMTIgMjJWMk0yIDEyaDIwTTUuNSAxOC41QTkgOSAwIDAgMCAxMiAyMiA5IDkgMCAwIDAgMTguNSA1LjUuMTgyMTIgNTkuNTUiLz48L3N2Zz4=',
+            logoImageUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48cGF0aCBkPSJNMTIgMjJWMk0yIDEyaDIwTTUuNSAxOC41QTkgOSAwIDAgMCAxMiAyMiA5IDkgMCAwIDAgMTguNSA1LjUuMTgyODEgMTguNSIvPjwvc3ZnPg==',
             headlineColor: '#FFFFFF',
             headlineSize: 23,
             newsBodyColor: '#E0E0E0',
@@ -964,14 +919,14 @@
             // Drag and Drop for main image
             dom.mainImageDropArea.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                dom.mainImageDropArea.classList.add('file-input-label-dragover'); /* Custom class for dragover effect */
+                dom.mainImageDropArea.classList.add('bg-blue-700', 'border-blue-200'); // Use custom CSS classes if defined
             });
             dom.mainImageDropArea.addEventListener('dragleave', (e) => {
-                dom.mainImageDropArea.classList.remove('file-input-label-dragover');
+                dom.mainImageDropArea.classList.remove('bg-blue-700', 'border-blue-200');
             });
             dom.mainImageDropArea.addEventListener('drop', (e) => {
                 e.preventDefault();
-                dom.mainImageDropArea.classList.remove('file-input-label-dragover');
+                dom.mainImageDropArea.classList.remove('bg-blue-700', 'border-blue-200');
                 const files = e.dataTransfer.files;
                 if (files.length > 0 && files[0].type.startsWith('image/')) {
                     handleFile(files[0], (url) => { state.mainImageUrl = url; updatePreview(); });
